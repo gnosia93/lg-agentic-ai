@@ -9,7 +9,7 @@ Qwen3.5 (2026년 2월):
   - 201개 언어
 ```
 
-## LLM Benchmark (범용 밴치마크) ##
+## 1. LLM Benchmark (범용 밴치마크) ##
 * https://github.com/EleutherAI/lm-evaluation-harness
 ```
 pip install lm-eval
@@ -37,7 +37,7 @@ import sys
 ![](https://github.com/gnosia93/agentic-ai-eks/blob/main/lesson/images/lm-eval.png)
 
 
-## PPL ##
+## 2. PPL ##
 파인튜닝 이전에 "DevOps/머신러닝" 도메인에 대한 모델의 이해도를 측정한다. 
 PPL(Perplexity)은 모델이 주어진 텍스트를 얼마나 "당연하게" 예측하는지를 측정하는 지표로, 수학적으로는 모델이 다음 토큰을 예측할 때의 평균 불확실성이다.
 ```
@@ -70,9 +70,13 @@ PPL 값이 낮을수록 좋다.
 * https://github.com/gnosia93/agentic-ai-eks/blob/main/code/qwen_ppl.py 
 
 
-## 도메인 밴치마크 ##
+### 도메인 밴치마크 ###
+* 
+*
+*
 
-## LLM Judge ##
+
+## 3. LLM Judge ##
 
 
 ## 레퍼런스 ##
