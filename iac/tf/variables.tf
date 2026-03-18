@@ -15,7 +15,7 @@ variable "vpc_cidr_block" {
   default     = "10.0.0.0/16"
 }
 
-variable "x86_type" {
+variable "gpu_type" {
   description = "EC2 Instance Type (x86)"
   type        = string
   default     = "g7e.4xlarge"
