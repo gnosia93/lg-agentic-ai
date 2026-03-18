@@ -13,7 +13,7 @@
 
 
 ### 필요 샘플수 ###
-파인 튜닝의 목적에 따라서 필요 샘플수는 다라진다. 
+파인 튜닝의 목적에 따라서 필요 샘플수는 달라진다. 
 ![](https://github.com/gnosia93/agentic-ai-eks/blob/main/lesson/images/ft-sample.png)
 
 
