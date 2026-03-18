@@ -15,3 +15,4 @@ Qwen3.5 (2026년 2월):
 
 
 ### 파인튜닝 ###
+* https://github.com/gnosia93/agentic-ai-eks/blob/main/code/finetune_qwen.py
