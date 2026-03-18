@@ -38,6 +38,8 @@ import sys
 
 
 ## 2. Domain Benchmark (도메인 벤치마크) ##
+
+### 2-1. PPL ###
 PPL(Perplexity)은 모델이 주어진 텍스트를 얼마나 "당연하게" 예측하는지를 측정하는 지표로, 수학적으로는 모델이 다음 토큰을 예측할 때의 평균 불확실성이다.
 ```
 PPL = exp(-1/N × Σ log P(token_i | token_1, ..., token_i-1))
@@ -65,7 +67,7 @@ PPL 값이 낮을수록 좋다.
 ```
 한마디로 PPL은 "모델이 이 도메인 텍스트를 얼마나 자연스럽게 느끼는가"의 수치화이고, 파인튜닝 효과를 정량적으로 검증하는 가장 기본적인 방법이다.
 
-### 2-1. PPL 측정 ###
+#### PPL 측정 ####
 ![](https://github.com/gnosia93/agentic-ai-eks/blob/main/lesson/images/qwen-ppl.png)
 * https://github.com/gnosia93/agentic-ai-eks/blob/main/code/qwen_ppl.py 
 
