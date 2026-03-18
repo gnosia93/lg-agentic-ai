@@ -9,7 +9,7 @@ Qwen3.5 (2026년 2월):
   - 201개 언어
 ```
 
-## LLM Benchmark ##
+## LLM Benchmark (범용 밴치마크) ##
 * https://github.com/EleutherAI/lm-evaluation-harness
 ```
 pip install lm-eval
@@ -67,6 +67,8 @@ PPL 값이 낮을수록 좋다.
 ### PPL 측정 ###
 * https://github.com/gnosia93/agentic-ai-eks/blob/main/code/qwen_ppl.py 
 
+
+## 도메인 밴치마크 ##
 
 ## LLM Judge ##
 
