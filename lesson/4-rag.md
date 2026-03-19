@@ -1,4 +1,4 @@
-## RAG (Retrieval-Augmented Generation [검색 증강 생성]) ##
+## RAG (Retrieval-Augmented Generation / 검색 증강 생성) ##
 
 ### 1. 파이프라인 ###
 
