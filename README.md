@@ -15,10 +15,7 @@
    - 메모리 관리 (대화 히스토리)
    - LangFuse
 
-* [6. 가드레일 구성하기]
-   - Input/Output 필터링
-   - NLI 기반 환각 검증
-   - 프롬프트 인젝션 방어
+* [6. 가드레일 구성하기](https://github.com/gnosia93/agentic-ai-eks/blob/main/lesson/6.guard-rail.md)
 
 * [7. 모니터링 구성하기]
    - Prometheus + Grafana
