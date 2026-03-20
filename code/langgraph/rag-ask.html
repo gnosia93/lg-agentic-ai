@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>RAG 챗봇</title>
+    <style>
+        body { font-family: sans-serif; max-width: 600px; margin: 40px auto; }
+        #chat { border: 1px solid #ddd; height: 400px; overflow-y: auto; padding: 16px; border-radius: 8px; }
+        .user { color: #2563eb; margin: 8px 0; }
+        .assistant { color: #16a34a; margin: 8px 0; }
+        .sources { color: #999; font-size: 12px; margin-left: 16px; }
+        #input-area { display: flex; gap: 8px; margin-top: 12px; }
+        #input-area input { flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 6px; }
+        #input-area button { padding: 10px 20px; background: #2563eb; color: white; border: none; border-radius: 6px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h2>🔍 RAG 챗봇</h2>
+    <div id="chat"></div>
+    <div id="input-area">
+        <input type="text" id="question" placeholder="질문을 입력하세요..." />
+        <button onclick="ask()">전송</button>
+        <button onclick="newSession()" style="background:#666">새 세션</button>
+    </div>
+
+    <script>
+        const BASE_URL = "http://localhost:8000";
+        const chat = document.getElementById("chat");
+        const input = document.getElementById("question");
+
+        // 엔터키로 전송
+        input.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") ask();
+        });
+
+        // 질문 보내기
+        async function ask() {
+            const question = input.value.trim();
+            if (!question) return;
+
+            // 유저 메시지 표시
+            chat.innerHTML += `<div class="user"><b>나:</b> ${question}</div>`;
+            input.value = "";
+
+            // API 호출
+            const res = await fetch(`${BASE_URL}/ask`, {
+                method: "POST",
+                credentials: "include",           // ← 쿠키 자동 포함
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ question })
+            });
+            const data = await res.json();
+
+            // 답변 표시
+            chat.innerHTML += `<div class="assistant"><b>AI:</b> ${data.answer}</div>`;
+
+            // 출처 표시
+            if (data.sources && data.sources.length > 0) {
+                const srcHtml = data.sources.map(s => `<div>📄 ${s}</div>`).join("");
+                chat.innerHTML += `<div class="sources">${srcHtml}</div>`;
+            }
+
+            // 스크롤 내리기
+            chat.scrollTop = chat.scrollHeight;
+        }
+
+        // 새 세션
+        async function newSession() {
+            await fetch(`${BASE_URL}/new-session`, {
+                method: "POST",
+                credentials: "include"
+            });
+            chat.innerHTML = `<div style="color:#999">--- 새 세션 시작 ---</div>`;
+        }
+
+        // 페이지 로드 시 이전 대화 불러오기
+        async function loadHistory() {
+            const res = await fetch(`${BASE_URL}/history`, {
+                credentials: "include"
+            });
+            const data = await res.json();
+            data.messages.forEach(msg => {
+                if (msg.role === "user") {
+                    chat.innerHTML += `<div class="user"><b>나:</b> ${msg.content}</div>`;
+                } else {
+                    chat.innerHTML += `<div class="assistant"><b>AI:</b> ${msg.content}</div>`;
+                }
+            });
+            chat.scrollTop = chat.scrollHeight;
+        }
+
+        loadHistory();
+    </script>
+</body>
+</html>
