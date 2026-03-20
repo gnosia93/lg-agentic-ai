@@ -1,4 +1,4 @@
-* 1. 환경 설정
+### 1. 환경 설정 ###
 ```
 # 설치
 pip install langfuse
@@ -15,7 +15,7 @@ load_dotenv()
 langfuse_handler = CallbackHandler()  # 자동으로 환경변수 읽음
 ```
 
-* 2. 호출 추적
+### 2. 호출 추적 ###
 ```
 방법 1: 콜백 직접 전달 (수동)
 llm.invoke(input, config={"callbacks": [langfuse_handler]})
@@ -27,7 +27,7 @@ def my_function():
 데코레이터 방식이 훨씬 편해요. 어떤 방식으로 하실 건가요?
 ```
 
-* 3. 커스텀 메트릭(트레이스)
+### 3. 커스텀 메트릭(트레이스) ###
 ```
 from langfuse.decorators import observe, langfuse_context
 
