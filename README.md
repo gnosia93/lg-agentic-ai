@@ -27,9 +27,8 @@
     - HPA (Horizontal Pod Autoscaler) 설정
     - Ingress + 로드밸런싱
 
-* [9. Post Training]
-   - DPO로 선호도 정렬
-   - 평가 → 재학습 루프
+* [9. Post Training](https://github.com/gnosia93/eks-agentic-ai/blob/main/lesson/9.post-training.md)
+
 
 
 
