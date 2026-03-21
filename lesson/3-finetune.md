@@ -75,7 +75,6 @@ vllm serve ./merged-model --port 8000
 
 * 자주쓰는 옵션
 ```bash
-
 vllm serve ./my-model \
   --port 8000 \
   --tensor-parallel-size 2 \        # GPU 2장에 모델 분할
