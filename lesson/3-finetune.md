@@ -66,9 +66,7 @@ merged_model = model.merge_and_unload()
 # 저장
 merged_model.save_pretrained("./merged-model")
 AutoTokenizer.from_pretrained("meta-llama/Llama-3.1-8B-Instruct").save_pretrained("./merged-model")
-```
 
-```bash
 # 머지된 모델 서빙
 vllm serve ./merged-model --port 8000
 ```
