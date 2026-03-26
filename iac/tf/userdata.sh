@@ -10,15 +10,16 @@ apt-get update -y
 # ============================================================
 # 1. VS Code Server (code-server)
 # ============================================================
+sudo -u ubuntu -i bash -c '
 curl -fsSL https://code-server.dev/install.sh | sh
-
 mkdir -p /home/ubuntu/.config/code-server
-cat <<EOF > /home/ubuntu/.config/code-server/config.yaml
+cat > /home/ubuntu/.config/code-server/config.yaml <<EOF
 bind-addr: 0.0.0.0:8080
 auth: password
 password: ${vscode_password}
 cert: false
 EOF
+'
 
 # ============================================================
 # 2. Python 환경
