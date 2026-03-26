@@ -50,9 +50,20 @@ VPC 를 생성한다.
 terraform apply -auto-approve
 ```
 
-### VPC 확인 ###
+### Karpenter 설치 ###
 ```
-terraform output
+Karpenter 자체는 Helm으로 설치합니다 (Terraform apply 후):
+
+# kubeconfig 설정
+aws eks update-kubeconfig --name ${var.cluster_name}
+
+# Karpenter 설치
+helm install karpenter oci://public.ecr.aws/karpenter/karpenter \
+  --namespace karpenter --create-namespace \
+  --set settings.clusterName=${var.cluster_name} \
+  --set settings.clusterEndpoint=$(aws eks describe-cluster --name ${var.cluster_name} --query "cluster.endpoint" --output text) \
+  --set serviceAccount.annotations."eks\.amazonaws\.com/role-arn"=${karpenter_role_arn}
+variables.tf에 cluster_name 변수가 이미 있으니 그대로 쓰면 됩니다.
 ```
 
 ### VPC 삭제 ###
