@@ -73,6 +73,8 @@ Loki는 Grafana Labs가 만든 로그 수집/검색 시스템으로, "Prometheus
 * Compactor    → 오래된 청크 압축/병합/삭제 
 * Store        → S3/GCS 같은 오브젝트 스토리지에 영구 저장 / 라벨 → 인덱스, 본문 → 압축 청크
 
+![](https://github.com/gnosia93/eks-agentic-ai/blob/main/lesson/images/loki-arch.png)
+
 ### LogQL 예시 ###
 그라파나 대시보드에서 LogQL을 이용하여 로그를 조회한다.
 ```
