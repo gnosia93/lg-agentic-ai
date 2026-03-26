@@ -1,4 +1,6 @@
-## EKS ##
+## EKS 컨트롤 플레인 ##
+![](https://github.com/gnosia93/eks-agentic-ai/blob/main/lesson/images/k8s-controlplane-2.png)
+
 Control Plane 로그 활성화 (CloudWatch로 전송)
 ```
 aws eks update-cluster-config --name my-cluster \
