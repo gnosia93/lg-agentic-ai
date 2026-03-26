@@ -30,7 +30,7 @@
 
 ### _Appendix_ ###
 
-* [TensorRT-LLM 의 이해](https://github.com/gnosia93/infer-on-eks/blob/main/lesson/3-tensorrt-llm.md)
+* [TensorRT-LLM 의 이해](https://github.com/gnosia93/infer-on-eks/blob/main/lesson/a1-tensorrt-llm.md)
 * [Prometheus/Loki Stack]()   
 
 
