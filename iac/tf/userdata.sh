@@ -12,12 +12,10 @@ apt-get update -y
 sudo -u ubuntu -i bash -c '
 curl -fsSL https://code-server.dev/install.sh | sh
 mkdir -p /home/ubuntu/.config/code-server
-cat > /home/ubuntu/.config/code-server/config.yaml <<EOF
-bind-addr: 0.0.0.0:8080
+echo "bind-addr: 0.0.0.0:8080
 auth: password
 password: ${vscode_password}
-cert: false
-EOF
+cert: false" > /home/ubuntu/.config/code-server/config.yaml
 '
 
 # ============================================================
