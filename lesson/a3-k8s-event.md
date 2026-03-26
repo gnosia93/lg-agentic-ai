@@ -26,6 +26,8 @@ kubectl get events -A --field-selector type=Warning            # 클러스터 �
 
 ### 4. 이벤트 LOKI 저장 ###
 
+![](https://github.com/gnosia93/eks-agentic-ai/blob/main/lesson/images/k8s-event-exporter.png)
+
 [values.yaml]
 ```
 config:
