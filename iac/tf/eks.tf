@@ -153,17 +153,3 @@ resource "aws_iam_openid_connect_provider" "eks" {
   url             = aws_eks_cluster.main.identity[0].oidc[0].issuer
 }
 
-# ============================================
-# Outputs
-# ============================================
-output "eks_cluster_name" {
-  value = aws_eks_cluster.main.name
-}
-
-output "eks_cluster_endpoint" {
-  value = aws_eks_cluster.main.endpoint
-}
-
-output "karpenter_role_arn" {
-  value = aws_iam_role.karpenter_controller.arn
-}
