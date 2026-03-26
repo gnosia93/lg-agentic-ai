@@ -93,6 +93,76 @@ Loki는 Grafana Labs가 만든 로그 수집/검색 시스템으로, "Prometheus
 {node=~"gpu-node-.*"} |= "error" | logfmt
 ```
 
+#### loki 설정 예시 ####
+```
+# loki-config.yaml
+auth_enabled: false
+
+server:
+  http_listen_port: 3100
+
+common:
+  ring:
+    kvstore:
+      store: memberlist          # 컴포넌트 간 서비스 디스커버리
+  replication_factor: 3          # 데이터 3벌 복제
+
+# 로그 수신
+distributor:
+  ring:
+    kvstore:
+      store: memberlist
+
+# 로그 버퍼링 + flush
+ingester:
+  lifecycler:
+    ring:
+      kvstore:
+        store: memberlist
+      replication_factor: 3
+  chunk_idle_period: 30m         # 30분 동안 로그 안 오면 flush
+  chunk_retain_period: 1m
+  max_chunk_age: 1h              # 최대 1시간 버퍼링 후 flush
+
+# 검색
+querier:
+  max_concurrent: 10             # 동시 쿼리 수
+
+# 영구 저장소 (S3)
+storage_config:
+  boltdb_shipper:
+    active_index_directory: /loki/index
+    cache_location: /loki/cache
+    shared_store: s3
+  aws:
+    s3: s3://ap-northeast-2/loki-logs-bucket
+    bucketnames: loki-logs-bucket
+    region: ap-northeast-2
+
+# 스키마 (인덱스 + 청크 저장 방식)
+schema_config:
+  configs:
+    - from: 2026-01-01
+      store: boltdb-shipper
+      object_store: s3
+      schema: v13
+      index:
+        prefix: loki_index_
+        period: 24h              # 인덱스 24시간 단위로 분할
+
+# 보관 기간
+limits_config:
+  retention_period: 30d          # 30일 보관
+  max_query_series: 5000
+  max_query_parallelism: 32
+
+# 압축/정리
+compactor:
+  working_directory: /loki/compactor
+  shared_store: s3
+  retention_enabled: true
+```
+
 ## 프로메테우스 샤딩 ##
 아래는 샤딩 관련 사이징 예시이다. 정확한 값은 측정이 필요하다.
 ```
