@@ -36,7 +36,7 @@ curl localhost:8000/metrics
 # training_throughput_tokens_per_sec 1520
 ```
 
-### tokens/sec 의미 ###
+### 학습 throughput(tokens/sec) ###
 "GPU를 얼마나 효율적으로 쓰고 있는가" 를 나타낸다. 예를 들어
 ```
 정상: 1.5M tokens/sec (일정하게 유지)
