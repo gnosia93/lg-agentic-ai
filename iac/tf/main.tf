@@ -115,7 +115,7 @@ resource "aws_iam_role_policy_attachment" "eks_creator_policy_cluster" {
 }
 
 resource "aws_iam_instance_profile" "eks_creator_profile" {
-  name = "INF_EC2_INST_Profile-${data.aws_region.current.region}"
+  name = "EAI_EC2_INST_Profile-${data.aws_region.current.region}"
   role = aws_iam_role.eks_creator_role.name
 }
 
