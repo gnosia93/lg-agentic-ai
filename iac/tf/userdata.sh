@@ -9,7 +9,7 @@ apt-get update -y || true
 # ============================================================
 # 1. VS Code Server (code-server)
 # ============================================================
-sudo -u ubuntu -i bash -c 'curl -fsSL https://code-server.dev/install.sh | sh'
+sudo -u ubuntu -i bash -c 'curl -fsSL https://code-server.dev/install.sh | sh && sudo systemctl enable --now code-server@ubuntu && sleep 5'
 sudo -u ubuntu mkdir -p /home/ubuntu/.config/code-server
 cat > /home/ubuntu/.config/code-server/config.yaml <<CODEEOF
 bind-addr: 0.0.0.0:8080
@@ -56,5 +56,5 @@ cat > /home/ubuntu/.local/share/code-server/User/settings.json <<EOF
 EOF
 '
 
-systemctl enable --now code-server@ubuntu
+systemctl restart code-server@ubuntu
 echo "=== UserData Complete ==="
