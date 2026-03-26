@@ -26,13 +26,11 @@
 * [9. Post Training](https://github.com/gnosia93/eks-agentic-ai/blob/main/lesson/9.post-training.md)
 
 
-
-
 ### _Appendix_ ###
 
 * [TensorRT-LLM 연산최적화](https://github.com/gnosia93/infer-on-eks/blob/main/lesson/a1-tensorrt-llm.md)
 * [Prometheus/Loki Stack](https://github.com/gnosia93/eks-agentic-ai/blob/main/lesson/a2-prometheus-loki.md)   
-* [k8s 이벤트 LOKI 저장하기](https://github.com/gnosia93/eks-agentic-ai/blob/main/lesson/a3-k8s-event.md)
+* [k8s 이벤트를 LOKI에 저장하기](https://github.com/gnosia93/eks-agentic-ai/blob/main/lesson/a3-k8s-event.md)
 
 ### todo ###
 * 각각의 모듈에 대해서 도커를 만들어서 ecr 에 푸시한다.
