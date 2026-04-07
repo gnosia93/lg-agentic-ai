@@ -26,7 +26,7 @@ kubectl logs job/trtllm-engine-build
 
 TensorRT-LLM 서버를 배포한다.
 ```
-curl -o https://raw.githubusercontent.com/gnosia93/eks-agentic-ai/refs/heads/main/code/yaml/trtllm-qwen.yaml
+curl -o trtllm-deployment.yaml https://raw.githubusercontent.com/gnosia93/eks-agentic-ai/refs/heads/main/code/yaml/trtllm-qwen.yaml
 
 kubectl apply -f trtllm-deployment.yaml
 ```
