@@ -20,7 +20,7 @@
 * [7. RAG 평가 파이프라인 구성하기](https://github.com/gnosia93/agentic-ai-eks/blob/main/lesson/7.eval-framework.md)
 
 * [8. EKS 배포하기]
-   - [vLLM 인프런스 배포](https://github.com/gnosia93/eks-agentic-ai/blob/main/lesson/8-vllm-inference.md)  
+   - [vLLM 인퍼런스 하기](https://github.com/gnosia93/eks-agentic-ai/blob/main/lesson/8-vllm-inference.md)  
    - TensorRT-LLM 배포
    - HPA (Horizontal Pod Autoscaler) 설정
    - Ingress + 로드밸런싱
