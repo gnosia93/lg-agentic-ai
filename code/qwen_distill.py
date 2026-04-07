@@ -1,4 +1,4 @@
-# qwen_finetune_distill.py
+# qwen_distill.py
 # 응답 기반 증류 (Response-based Distillation)
 # Teacher: Qwen3.5-27B → Student: Qwen3.5-3B
 
