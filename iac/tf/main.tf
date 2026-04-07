@@ -156,6 +156,14 @@ resource "aws_security_group" "instance_sg" {
 
   # VS Code Server (Code Server) 접속 허용
   ingress {
+    from_port   = 9090
+    to_port     = 9090
+    protocol    = "tcp"
+    cidr_blocks = local.allowed_ip_cidrs
+  }
+
+  # VS Code Server (Code Server) 접속 허용
+  ingress {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
