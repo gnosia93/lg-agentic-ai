@@ -5,9 +5,8 @@
 ```bash
 # S3 버킷 생성
 export ENGINE_BUCKET=tensorrt-llm-$(date +%Y%m%d%H%M)
-aws s3 mb s3://${ENGINE_BUCKET} --region ap-northeast-2
 
-# ServiceAccount에 S3 접근 권한 부여
+aws s3 mb s3://${ENGINE_BUCKET} --region ap-northeast-2
 eksctl create iamserviceaccount \
   --name s3-access-sa \
   --namespace default \
@@ -17,7 +16,6 @@ eksctl create iamserviceaccount \
 
 curl -o trtllm-engine-build.yaml \
   https://raw.githubusercontent.com/gnosia93/eks-agentic-ai/refs/heads/main/code/yaml/trtllm-engine-build.yaml
-
 envsubst < trtllm-engine-build.yaml | kubectl apply -f -
 
 kubectl wait --for=condition=complete job/trtllm-engine-build --timeout=60m
@@ -27,7 +25,6 @@ kubectl logs job/trtllm-engine-build
 TensorRT-LLM 서버를 배포한다.
 ```
 curl -o trtllm-deployment.yaml https://raw.githubusercontent.com/gnosia93/eks-agentic-ai/refs/heads/main/code/yaml/trtllm-qwen.yaml
-
 kubectl apply -f trtllm-deployment.yaml
 ```
 
