@@ -32,7 +32,7 @@ kubectl run test --rm -it --image=curlimages/curl -- \
   }'
 ```
 또는
-```
+```bash
 # 터미널 1: 포트 포워딩
 kubectl port-forward svc/vllm-qwen-svc 8080:80
 
@@ -46,4 +46,18 @@ curl http://localhost:8080/v1/chat/completions \
   }'
 ```
 
+### 성능 밴치마크 ###
+```bash
+kubectl get pods
+
+# vLLM 벤치마크 (파드 안에서 실행)
+kubectl exec -it <vllm-pod-name> -- python -m vllm.entrypoints.openai.api_server &
+
+python -m vllm.entrypoints.openai.bench_serving \
+  --backend openai \
+  --base-url http://localhost:8000 \
+  --model qwen \
+  --num-prompts 100 \
+  --request-rate 10
+```
 
