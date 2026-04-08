@@ -1,6 +1,61 @@
 ## 장시간 실행되는 에이전트의 상태 관리, 복구, 모니터링 ##
+에이전트가 단순 질의응답이 아닌 수분에서 수시간에 걸치는 멀티스텝 작업을 수행하는 경우, 중간 상태를 외부 저장소에 체크포인트로 저장하여 장애 발생 시 마지막 체크포인트부터 재개할 수 있도록 구성해야 한다. LangGraph는 Redis, PostgreSQL 등을 체크포인터 백엔드로 지원하며, 그래프의 노드가 하나 실행될 때마다 자동으로 상태를 저장한다. 모니터링은 LangFuse를 통해 각 스텝별 실행 시간, 토큰 사용량, 실패 지점을 추적할 수 있다.
+
+### 상태 관리 ###
+에이전트의 실행 상태를 외부 저장소에 체크포인트로 저장해서, 중간에 죽어도 이어서 작업을 진행할 수 있게 한다.
+```python
+from langgraph.checkpoint.postgres import PostgresSaver
+
+# 체크포인터 설정 - 매 노드 실행 후 상태를 DB에 저장
+checkpointer = PostgresSaver(conn_string="postgresql://...")
+
+graph = workflow.compile(checkpointer=checkpointer)
+
+# 실행 시 thread_id로 세션 구분
+config = {"configurable": {"thread_id": "task-123"}}
+result = graph.invoke(input, config)
+```
+매 스텝마다 그래프 상태(현재 노드, 중간 결과, 메모리)가 DB에 저장된다. Redis, PostgreSQL, SQLite 등을 백엔드로 쓸 수 있다.
 
 
+### 복구 ###
+체크포인트가 있으면 복구는 간단한다.
+```python
+# 같은 thread_id로 다시 실행하면 마지막 체크포인트부터 이어서 진행
+config = {"configurable": {"thread_id": "task-123"}}
+result = graph.invoke(None, config)  # input=None이면 마지막 상태에서 재개
+```
+#### 추가로 고려할 것들: ####
+* 타임아웃: 특정 스텝이 너무 오래 걸리면 강제 종료 후 폴백
+* 재시도: LLM API 호출 실패 시 exponential backoff로 재시도
+* 데드레터 큐: 반복 실패하는 작업은 별도 큐로 빼서 나중에 처리
+
+### 모니터링 ###
+```python
+from langfuse.callback import CallbackHandler
+
+handler = CallbackHandler(
+    public_key="...",
+    secret_key="...",
+)
+
+# 에이전트 실행 시 콜백 연결
+result = graph.invoke(input, config, callbacks=[handler])
+```
+
+#### LangFuse에서 추적할 수 있는 것들: ####
+* 각 스텝별 실행 시간, 토큰 사용량, 비용
+* 어느 노드에서 실패했는지
+* 전체 에이전트 실행 트레이스
+
+#### 프로덕션에서는 여기에 Prometheus 메트릭도 추가해서: ####
+* 에이전트 실행 중인 수 (active agents)
+* 평균 완료 시간
+* 실패율
+* 스텝별 지연 시간
+
+
+----
 ### 캐싱전략 ###
 같은 질문이 반복될 때 LLM을 다시 호출하지 않고 캐시된 응답을 반환한다.
 ```python
