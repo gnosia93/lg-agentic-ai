@@ -57,10 +57,16 @@ MoE 모델에서 EP를 적용할 때의 핵심 트레이드오프:
 멀티노드 서빙에서 한 노드가 죽으면 전체 파이프라인이 멈추게 된다. Kubernetes 환경에서 pod 단위 재시작보다는 전체 replica 단위 관리가 필요하다. Kubernetes 기본 기능만으로는 이런 "그룹 단위 lifecycle 관리"가 안 되기 때문에, [LeaderWorkerSet](https://lws.sigs.k8s.io/docs/overview/) 같은 커스텀 리소스나 별도의 오케스트레이션 로직이 필요하다.
 ![](https://github.com/gnosia93/eks-agentic-ai/blob/main/lesson/images/multi-node-inf-3.png)
 
-#### LWS ####
+* 웜업:   
+첫 요청 시 CUDA 커널 컴파일, NCCL 초기화 등으로 지연이 크게 발생한다. 배포 후 더미 요청으로 웜업하는 것이 필수이다.   
+* 네트워크 토폴로지 인식:  
+클라우드 환경에서 노드 간 대역폭이 균일하지 않을 수 있기 때문에 placement group(AWS)이나 compact placement policy(GCP)로 노드를 물리적으로 가까이 배치해야 한다.
+
+
+## LWS ##
 LeaderWorkerSet는 Kubernetes SIG에서 관리하는 커스텀 리소스로, pod 그룹을 하나의 복제 단위로 관리하기 위해 만들어 졌다.
 
-* 구조
+### 구조 ###
 ```
 LeaderWorkerSet (replicas: 2, size: 3)
 ├── Worker Group 0 (= Replica 0)
@@ -75,14 +81,14 @@ LeaderWorkerSet (replicas: 2, size: 3)
 * replicas: Worker Group의 수 (수평 스케일링 단위)
 * size: 한 그룹 내 pod 수 (leader + workers)
 
-* 핵심 기능들
-  * All-or-nothing restart
-  * 그룹 단위 롤링 업데이트
-  * 토폴로지 인식 배치 - 같은 그룹의 pod들을 같은 노드/서브넷/존에 배치해서 GPU 간 통신 지연을 최소화.
-  * 듀얼 템플릿 - Leader pod과 Worker pod에 서로 다른 스펙을 지정 가능.
-  * HPA 연동
+### 핵심 기능들 ###
+* All-or-nothing restart
+* 그룹 단위 롤링 업데이트
+* 토폴로지 인식 배치 - 같은 그룹의 pod들을 같은 노드/서브넷/존에 배치해서 GPU 간 통신 지연을 최소화.
+* 듀얼 템플릿 - Leader pod과 Worker pod에 서로 다른 스펙을 지정 가능.
+* HPA 연동
 
-#### 실제 vLLM 배포 예시 ####
+### 실제 vLLM 배포 예시 ###
 ```
 apiVersion: leaderworkerset.x-k8s.io/v1
 kind: LeaderWorkerSet
@@ -113,8 +119,3 @@ spec:
             limits:
               nvidia.com/gpu: 8
 ```
-
-* 웜업:   
-첫 요청 시 CUDA 커널 컴파일, NCCL 초기화 등으로 지연이 크게 발생한다. 배포 후 더미 요청으로 웜업하는 것이 필수이다.   
-* 네트워크 토폴로지 인식:  
-클라우드 환경에서 노드 간 대역폭이 균일하지 않을 수 있기 때문에 placement group(AWS)이나 compact placement policy(GCP)로 노드를 물리적으로 가까이 배치해야 한다.
