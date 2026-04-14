@@ -32,7 +32,7 @@
 
 * L9. CI/CD 파이프라인
    - 프롬프트 버전 관리
-   - 에이전트 로직 테스트 자동화
+   - [에이전트 로직 테스트 자동화](https://github.com/gnosia93/eks-agentic-ai/blob/main/lesson/9-cicd-agent-test.md)
    - 배포 파이프라인
 
 * L10. EKS 배포하기
