@@ -1,4 +1,4 @@
-## Tool 콜링 egress 관리 ##
+## SSRF 방지를 위한 네트워크 격리 (Egress 관리) ##
 
 ![](https://github.com/gnosia93/eks-agentic-ai/blob/main/lesson/images/security-toolcall-ssrf.png)
 
