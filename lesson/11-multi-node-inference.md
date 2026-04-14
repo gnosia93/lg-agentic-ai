@@ -8,6 +8,16 @@
 * vLLM: PagedAttention + 텐서/파이프라인 병렬리즘 지원
 * TensorRT-LLM: NVIDIA 최적화, 멀티노드 지원(MPI + NCCL)
 
+| 항목 | vLLM | TensorRT-LLM |
+|------|------|---------------|
+| 접근 방식 | 런타임 기반 (모델을 그대로 로드, 동적 최적화) | 컴파일러 기반 (GPU에 맞춰 미리 엔진 빌드) |
+| 핵심 기술 | PagedAttention + TP/PP/EP | 커널 퓨전 + TP/PP/EP |
+| 콜드스타트 | ~60초 | ~28분 (첫 컴파일), 이후 ~90초 (엔진 재로드) |
+| 하드웨어 | NVIDIA + AMD ROCm + Intel | NVIDIA 전용 (H100/A100/Blackwell) |
+| 모델 지원 | 수백 개 아키텍처, 새 모델 빠르게 대응 | 주요 모델 위주, 대응 상대적으로 느림 |
+| 분산 런타임 | Ray 기반 | MPI + NCCL 기반 |
+| 적합한 경우 | 모델 자주 변경, 실험 단계, 멀티벤더, 빠른 스케일아웃 | 단일 모델 장기 프로덕션, 극한 성능, NVIDIA 전용 환경 |
+
 
 ### TP + PP 하이브리드 구성 시 고려사항 ###
 * TP degree 선택: 노드 내 GPU 수(보통 8)를 넘지 않도록 설정. NVLink 대역폭(예: A100 NVSwitch 600GB/s)을 넘어 노드 간 TP를 걸면 all-reduce 지연이 급격히 증가.
