@@ -140,6 +140,53 @@ daily_sample = random.sample(responses, 10)
 
 4. 자동 Regression 체크:
 ```
+import json
+
+def load_previous_good_cases():
+    """이전에 잘 작동했던 케이스 로드"""
+    
+    # JSON 파일에서 로드
+    with open("regression_test.json") as f:
+        return json.load(f)
+
+# regression_test.json
+[
+    {
+        "input": "환불 방법은?",
+        "expected_quality": "good",
+        "timestamp": "2024-01-01"
+    },
+    {
+        "input": "배송 조회",
+        "expected_quality": "good",
+        "timestamp": "2024-01-02"
+    }
+]
+
+def quality_check(query: str, response: str) -> str:
+    """질문과 응답 함께 체크"""
+    
+    # 1. 기본 체크
+    if len(response) < 10 or not response.strip():
+        return "fail"
+    
+    # 2. 질문과 관련성
+    if not is_relevant(query, response):
+        return "fail"
+    
+    # 3. 에러 메시지
+    if "error" in response.lower():
+        return "fail"
+    
+    return "pass"
+
+def is_relevant(query: str, response: str) -> bool:
+    """질문과 응답 관련성 체크"""
+    # 임베딩 유사도
+    score = similarity(query, response)
+    return score > 0.3  # 최소 관련성
+
+
 # 기존 잘 되던 케이스 자동 테스트
 regression_test = load_previous_good_cases()
 
