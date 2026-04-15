@@ -149,3 +149,5 @@ curl -X POST http://localhost:8000/classify \
 jobs
 kill %1
 ```
+
+## Llama Guard 3 모델 배포하기 ##
