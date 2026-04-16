@@ -233,3 +233,9 @@ spec:
       effect: "NoSchedule"                    # Exists 연산자로 nvidia.com/gpu 키만 체크         
 EOF
 ```
+파드를 확인한다.
+```
+kubectl get pods
+kubectl logs gpu-pod
+```
+
