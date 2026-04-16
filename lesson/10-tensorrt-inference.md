@@ -7,7 +7,7 @@ TensorRT은 커널 퓨전, 메모리 레이아웃 최적화, 패딩 최적화를
 ![](https://github.com/gnosia93/eks-agentic-ai/blob/main/lesson/images/tensorrt-optimization.png)
 
 
-## TensorRT-LLM 배포하기 ##
+## TensorRT-LLM 에 모델 배포하기 ##
 
 S3 버킷을 생성하고 테라폼에서 생성한 eks-agentic-ai-s3-access 을 쿠버네티스의 서비스 어카운트에 할당한다
 ```bash
