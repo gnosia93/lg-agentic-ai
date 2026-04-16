@@ -41,7 +41,7 @@ spec:
       containers:
         - name: triton
           image: nvcr.io/nvidia/tritonserver:24.12-trtllm-python-py3
-          command: ["python", "-m", "tensorrt_llm.commands.serve"]
+          command: ["python3", "-m", "tensorrt_llm.commands.serve"]
           args:
             - --engine_dir=/engines/qwen
             - --tokenizer_dir=/models/qwen-hf
