@@ -14,6 +14,8 @@ kubectl annotate serviceaccount s3-access-sa -n default \
   eks.amazonaws.com/role-arn=arn:aws:iam::${ACCOUNT_ID}:role/eks-agentic-ai-s3-access
 ```
 
+### 모델 컴파일 하기 ###
+
 트리톤 서버를 이용하여 Qwen 모델을 컴파일 한다.
 ```bash
 mkdir triton && cd triton
@@ -39,6 +41,7 @@ Downloading 'model-00016-of-00037.safetensors' to '/workspace/qwen-hf/.cache/hug
 ...
 ```
 
+### 모델 배포하기 ###
 [trtllm-qwen.yaml](https://github.com/gnosia93/eks-agentic-ai/blob/main/code/yaml/trtllm-engine-build.yaml) 로 TensorRT-LLM 서버를 배포한다.
 ```
 curl -o trtllm-qwen.yaml \
