@@ -54,7 +54,7 @@ kubectl version --client
 ### 카펜터 설치 확인 ###
 본 워크샵에서는 테라폼 apply 시 eks 클러스터와 함께 카펜터가 자동으로 설치된다. 하지만 노드풀 및 ec2노드 클래스는 별도로 생성해야 한다. 
 ```
-kubectl get pods -n kube-system -l app.kubernetes.io/name=karpenter
+kubectl get pods -n karpenter -l app.kubernetes.io/name=karpenter
 kubectl get crd | grep karpenter
 
 kubectl get nodepools
