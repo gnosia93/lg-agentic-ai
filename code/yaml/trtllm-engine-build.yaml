@@ -31,7 +31,7 @@ spec:
               huggingface-cli download Qwen/Qwen2.5-72B-Instruct --local-dir /workspace/qwen-hf
 
               echo "=== Building TRT-LLM engine ==="
-              python -m tensorrt_llm.commands.build \
+              python3 -m tensorrt_llm.commands.build \
                 --model_dir /workspace/qwen-hf \
                 --output_dir /workspace/engines/qwen \
                 --dtype bfloat16 \
