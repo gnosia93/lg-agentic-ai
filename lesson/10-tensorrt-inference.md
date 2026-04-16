@@ -56,7 +56,7 @@ Downloading 'model-00016-of-00037.safetensors' to '/workspace/qwen-hf/.cache/hug
 
 > [!TIP]
 > 설치된 파이썬 패키지 정보 조회하기  
-> kubectl exec -it trtllm-engine-build-vlhs7 -- bash  
+> kubectl exec -it [pod name] -- bash  
 > pip show transformers torch tensorrt_llm  
 
 ### 모델 배포하기 ###
