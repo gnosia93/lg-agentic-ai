@@ -82,6 +82,13 @@ echo 'export PATH=$PATH:$(go env GOPATH)/bin' >> ~/.bashrc
 source ~/.bashrc
 ```
 
+### 메트릭 서버 설치 ###
+파드의 CPU 및 메모리 사용량 정보를 추적하기 위해서 메트릭 서버를 설치한다.
+```
+kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+```
+
+
 ### GPU 오퍼레이터 설치 ###
 EKS GPU AMI에는 이미 NVIDIA 드라이버와 NVIDIA 컨테이너 툴킷이 설치되어 있어서, GPU Operator에서 이 부분을 비활성화해야 한다.
 
