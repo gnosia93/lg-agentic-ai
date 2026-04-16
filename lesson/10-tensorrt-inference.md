@@ -22,14 +22,21 @@ curl -o trtllm-engine-build.yaml \
 
 envsubst < trtllm-engine-build.yaml | kubectl apply -f -
 
-kubectl wait --for=condition=complete job/trtllm-engine-build --timeout=60m
-kubectl logs job/trtllm-engine-build
+kubectl logs job/trtllm-engine-build -f
 ```
 [결과]
 ```
-
-
-
+Download complete. Moving file to /workspace/qwen-hf/model-00003-of-00037.safetensors
+Fetching 47 files:  19%|█▉        | 9/47 [00:10<00:43,  1.14s/it]Downloading 'model-00013-of-00037.safetensors' to '/workspace/qwen-hf/.cache/huggingface/download/PWuBP-Hof8RRqr17zbm-lsSqkWg=.091e0a428c3786c0fe75fb9f3445ea7173f0f6af35133a898bf817890d16bec3.incomplete'
+Downloading 'model-00014-of-00037.safetensors' to '/workspace/qwen-hf/.cache/huggingface/download/thvUQ1D_SSAk7X9laonYIrmn2cY=.cdb3585244781534f601d22fbba8e2583fe0fc08d46846df86788bb08a4f9b9b.incomplete'
+Download complete. Moving file to /workspace/qwen-hf/model-00009-of-00037.safetensors
+Downloading 'model-00015-of-00037.safetensors' to '/workspace/qwen-hf/.cache/huggingface/download/5165UonhYHQraDFi8a6AzeYNDDA=.8f6d40610c1470d4097c298a3ad6951ae06bf60458d743fb77be4b52753e0b9c.incomplete'
+Download complete. Moving file to /workspace/qwen-hf/model-00005-of-00037.safetensors
+Fetching 47 files:  23%|██▎       | 11/47 [00:20<01:33,  2.59s/it]Download complete. Moving file to /workspace/qwen-hf/model-00012-of-00037.safetensors
+Download complete. Moving file to /workspace/qwen-hf/model-00014-of-00037.safetensors
+Download complete. Moving file to /workspace/qwen-hf/model-00013-of-00037.safetensors
+Downloading 'model-00016-of-00037.safetensors' to '/workspace/qwen-hf/.cache/huggingface/download/Pqpxba7EhM6HCzYC2Kg8oCdwqeA=.32b0cb30dcde0bd0a00c2191cd0ced6786aed1126b424e2827987d53cb412eb7.incomplete'
+...
 ```
 
 [trtllm-qwen.yaml](https://github.com/gnosia93/eks-agentic-ai/blob/main/code/yaml/trtllm-engine-build.yaml) 로 TensorRT-LLM 서버를 배포한다.
