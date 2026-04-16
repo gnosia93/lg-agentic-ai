@@ -49,7 +49,6 @@
 
 ### _Appendix_ ###
 
-* [TensorRT-LLM 연산최적화](https://github.com/gnosia93/infer-on-eks/blob/main/lesson/a1-tensorrt-llm.md)
 * [Prometheus/Loki Stack](https://github.com/gnosia93/eks-agentic-ai/blob/main/lesson/a2-prometheus-loki.md)   
 * [LOKI에 K8S 이벤트 저장하기](https://github.com/gnosia93/eks-agentic-ai/blob/main/lesson/a3-k8s-event.md)
 * [K8S 컨트롤 플레인](https://github.com/gnosia93/eks-agentic-ai/blob/main/lesson/a4-k8s-controlplan.md)
