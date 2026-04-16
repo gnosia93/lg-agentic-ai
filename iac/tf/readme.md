@@ -60,6 +60,18 @@ kubectl logs -n karpenter -l app.kubernetes.io/name=karpenter --tail=50
 ```
 
 ### gpu 풀 생성 ###
-```
+EKS GPU AMI에는 이미 NVIDIA 드라이버와 NVIDIA 컨테이너 툴킷이 설치되어 있어서, GPU Operator에서 이 부분을 비활성화해야 한다.
 
+```
+helm repo add nvidia https://helm.ngc.nvidia.com/nvidia
+helm repo update
+
+helm install gpu-operator nvidia/gpu-operator \
+  --namespace gpu-operator \
+  --create-namespace \
+  --set driver.enabled=false \
+  --set toolkit.enabled=false \
+  --set devicePlugin.enabled=true \
+  --set migManager.enabled=false \
+  --set mig.strategy=single
 ```
