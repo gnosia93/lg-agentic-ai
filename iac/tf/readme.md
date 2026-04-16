@@ -39,16 +39,6 @@ aws eks update-kubeconfig --name ${CLUSTER_NAME}
 #  --set settings.clusterEndpoint=$(aws eks describe-cluster --name ${var.cluster_name} --query "cluster.endpoint" --output text) \
 #  --set serviceAccount.annotations."eks\.amazonaws\.com/role-arn"=${karpenter_role_arn}
 ```
-kubectl를 설치한다.
-```
-ARCH=amd64
-curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.33.3/2025-08-03/bin/linux/$ARCH/kubectl
-chmod +x ./kubectl
-mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$HOME/bin:$PATH
-echo 'export PATH=$HOME/bin:$PATH' >> ~/.bashrc
-
-kubectl version --client
-```
 
 ### 카펜터 설치 확인 ###
 본 워크샵에서는 테라폼 apply 시 eks 클러스터와 함께 카펜터가 자동으로 설치된다. 하지만 노드풀 및 ec2노드 클래스는 별도로 생성해야 한다. 
@@ -61,15 +51,17 @@ kubectl logs -n karpenter -l app.kubernetes.io/name=karpenter --tail=50
 
 ### 관리용 소프트웨어 설치 ###
 ```
+ARCH=amd64
+curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.33.3/2025-08-03/bin/linux/$ARCH/kubectl
+chmod +x ./kubectl
+mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$HOME/bin:$PATH
+echo 'export PATH=$HOME/bin:$PATH' >> ~/.bashrc
+kubectl version --client
+
 curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-4
 sh get_helm.sh
 helm version
 
-ARCH="arm64"
-if [ "$(uname -m)" != 'aarch64' ]; then
-  ARCH="amd64"
-fi
-echo ${ARCH}" architecture detected .."
 curl --silent --location "https://github.com/derailed/k9s/releases/latest/download/k9s_Linux_${ARCH}.tar.gz" | tar xz -C /tmp
 sudo mv /tmp/k9s /usr/local/bin/
 k9s version
