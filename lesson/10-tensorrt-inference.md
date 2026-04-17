@@ -343,6 +343,115 @@ W0417 00:46:37.981000 195 torch/utils/cpp_extension.py:2422] If this is not desi
 646it [00:00, 888.04it/s]
 ...
 ```
+Job 완료 될때 까지 70 ~ 80 분 정도의 시간이 소요된다.
+
+#### 변환된 모델 출력 ####
+```
+aws s3 ls ${ENGINE_BUCKET} --recursive
+```
+[결과]
+```
+2026-04-17 05:56:50       6573 trtllm-engines/qwen/config.json
+2026-04-17 05:56:50 38261584796 trtllm-engines/qwen/rank0.engine
+2026-04-17 05:56:50 38261584796 trtllm-engines/qwen/rank1.engine
+2026-04-17 05:56:50 38261584796 trtllm-engines/qwen/rank2.engine
+2026-04-17 05:56:50 38261584796 trtllm-engines/qwen/rank3.engine
+2026-04-17 06:00:12          1 trtllm-models/qwen-hf/.cache/huggingface/.gitignore
+2026-04-17 06:00:12        101 trtllm-models/qwen-hf/.cache/huggingface/download/.gitattributes.metadata
+2026-04-17 06:00:12        101 trtllm-models/qwen-hf/.cache/huggingface/download/LICENSE.metadata
+2026-04-17 06:00:12        101 trtllm-models/qwen-hf/.cache/huggingface/download/README.md.metadata
+2026-04-17 06:00:12        101 trtllm-models/qwen-hf/.cache/huggingface/download/config.json.metadata
+2026-04-17 06:00:12        101 trtllm-models/qwen-hf/.cache/huggingface/download/generation_config.json.metadata
+2026-04-17 06:00:12        101 trtllm-models/qwen-hf/.cache/huggingface/download/merges.txt.metadata
+2026-04-17 06:00:12        125 trtllm-models/qwen-hf/.cache/huggingface/download/model-00001-of-00037.safetensors.metadata
+2026-04-17 06:00:12        125 trtllm-models/qwen-hf/.cache/huggingface/download/model-00002-of-00037.safetensors.metadata
+2026-04-17 06:00:12        125 trtllm-models/qwen-hf/.cache/huggingface/download/model-00003-of-00037.safetensors.metadata
+2026-04-17 06:00:12        124 trtllm-models/qwen-hf/.cache/huggingface/download/model-00004-of-00037.safetensors.metadata
+2026-04-17 06:00:12        125 trtllm-models/qwen-hf/.cache/huggingface/download/model-00005-of-00037.safetensors.metadata
+2026-04-17 06:00:12        125 trtllm-models/qwen-hf/.cache/huggingface/download/model-00006-of-00037.safetensors.metadata
+2026-04-17 06:00:12        125 trtllm-models/qwen-hf/.cache/huggingface/download/model-00007-of-00037.safetensors.metadata
+2026-04-17 06:00:12        125 trtllm-models/qwen-hf/.cache/huggingface/download/model-00008-of-00037.safetensors.metadata
+2026-04-17 06:00:12        125 trtllm-models/qwen-hf/.cache/huggingface/download/model-00009-of-00037.safetensors.metadata
+2026-04-17 06:00:12        125 trtllm-models/qwen-hf/.cache/huggingface/download/model-00010-of-00037.safetensors.metadata
+2026-04-17 06:00:12        125 trtllm-models/qwen-hf/.cache/huggingface/download/model-00011-of-00037.safetensors.metadata
+2026-04-17 06:00:12        125 trtllm-models/qwen-hf/.cache/huggingface/download/model-00012-of-00037.safetensors.metadata
+2026-04-17 06:00:12        125 trtllm-models/qwen-hf/.cache/huggingface/download/model-00013-of-00037.safetensors.metadata
+2026-04-17 06:00:12        125 trtllm-models/qwen-hf/.cache/huggingface/download/model-00014-of-00037.safetensors.metadata
+2026-04-17 06:00:12        125 trtllm-models/qwen-hf/.cache/huggingface/download/model-00015-of-00037.safetensors.metadata
+2026-04-17 06:00:12        125 trtllm-models/qwen-hf/.cache/huggingface/download/model-00016-of-00037.safetensors.metadata
+2026-04-17 06:00:12        125 trtllm-models/qwen-hf/.cache/huggingface/download/model-00017-of-00037.safetensors.metadata
+2026-04-17 06:00:12        124 trtllm-models/qwen-hf/.cache/huggingface/download/model-00018-of-00037.safetensors.metadata
+2026-04-17 06:00:12        124 trtllm-models/qwen-hf/.cache/huggingface/download/model-00019-of-00037.safetensors.metadata
+2026-04-17 06:00:12        125 trtllm-models/qwen-hf/.cache/huggingface/download/model-00020-of-00037.safetensors.metadata
+2026-04-17 06:00:12        125 trtllm-models/qwen-hf/.cache/huggingface/download/model-00021-of-00037.safetensors.metadata
+2026-04-17 06:00:12        124 trtllm-models/qwen-hf/.cache/huggingface/download/model-00022-of-00037.safetensors.metadata
+2026-04-17 06:00:12        125 trtllm-models/qwen-hf/.cache/huggingface/download/model-00023-of-00037.safetensors.metadata
+2026-04-17 06:00:12        125 trtllm-models/qwen-hf/.cache/huggingface/download/model-00024-of-00037.safetensors.metadata
+2026-04-17 06:00:12        124 trtllm-models/qwen-hf/.cache/huggingface/download/model-00025-of-00037.safetensors.metadata
+2026-04-17 06:00:12        125 trtllm-models/qwen-hf/.cache/huggingface/download/model-00026-of-00037.safetensors.metadata
+2026-04-17 06:00:12        125 trtllm-models/qwen-hf/.cache/huggingface/download/model-00027-of-00037.safetensors.metadata
+2026-04-17 06:00:12        125 trtllm-models/qwen-hf/.cache/huggingface/download/model-00028-of-00037.safetensors.metadata
+2026-04-17 06:00:12        124 trtllm-models/qwen-hf/.cache/huggingface/download/model-00029-of-00037.safetensors.metadata
+2026-04-17 06:00:12        125 trtllm-models/qwen-hf/.cache/huggingface/download/model-00030-of-00037.safetensors.metadata
+2026-04-17 06:00:12        125 trtllm-models/qwen-hf/.cache/huggingface/download/model-00031-of-00037.safetensors.metadata
+2026-04-17 06:00:12        125 trtllm-models/qwen-hf/.cache/huggingface/download/model-00032-of-00037.safetensors.metadata
+2026-04-17 06:00:12        124 trtllm-models/qwen-hf/.cache/huggingface/download/model-00033-of-00037.safetensors.metadata
+2026-04-17 06:00:12        125 trtllm-models/qwen-hf/.cache/huggingface/download/model-00034-of-00037.safetensors.metadata
+2026-04-17 06:00:12        125 trtllm-models/qwen-hf/.cache/huggingface/download/model-00035-of-00037.safetensors.metadata
+2026-04-17 06:00:12        124 trtllm-models/qwen-hf/.cache/huggingface/download/model-00036-of-00037.safetensors.metadata
+2026-04-17 06:00:12        125 trtllm-models/qwen-hf/.cache/huggingface/download/model-00037-of-00037.safetensors.metadata
+2026-04-17 06:00:12        100 trtllm-models/qwen-hf/.cache/huggingface/download/model.safetensors.index.json.metadata
+2026-04-17 06:00:12        100 trtllm-models/qwen-hf/.cache/huggingface/download/tokenizer.json.metadata
+2026-04-17 06:00:12        101 trtllm-models/qwen-hf/.cache/huggingface/download/tokenizer_config.json.metadata
+2026-04-17 06:00:12        101 trtllm-models/qwen-hf/.cache/huggingface/download/vocab.json.metadata
+2026-04-17 06:00:12       1519 trtllm-models/qwen-hf/.gitattributes
+2026-04-17 06:00:12       6962 trtllm-models/qwen-hf/LICENSE
+2026-04-17 06:00:12       6259 trtllm-models/qwen-hf/README.md
+2026-04-17 06:00:12        663 trtllm-models/qwen-hf/config.json
+2026-04-17 06:00:12        242 trtllm-models/qwen-hf/generation_config.json
+2026-04-17 06:00:12    1671839 trtllm-models/qwen-hf/merges.txt
+2026-04-17 06:00:12 3762345336 trtllm-models/qwen-hf/model-00001-of-00037.safetensors
+2026-04-17 06:00:17 3995200440 trtllm-models/qwen-hf/model-00002-of-00037.safetensors
+2026-04-17 06:00:22 3812769392 trtllm-models/qwen-hf/model-00003-of-00037.safetensors
+2026-04-17 06:00:33 3995183944 trtllm-models/qwen-hf/model-00004-of-00037.safetensors
+2026-04-17 06:00:33 3995183944 trtllm-models/qwen-hf/model-00005-of-00037.safetensors
+2026-04-17 06:00:41 3995200456 trtllm-models/qwen-hf/model-00006-of-00037.safetensors
+2026-04-17 06:00:44 3812769424 trtllm-models/qwen-hf/model-00007-of-00037.safetensors
+2026-04-17 06:01:06 3995183968 trtllm-models/qwen-hf/model-00008-of-00037.safetensors
+2026-04-17 06:01:31 3995183968 trtllm-models/qwen-hf/model-00009-of-00037.safetensors
+2026-04-17 06:01:31 3995200464 trtllm-models/qwen-hf/model-00010-of-00037.safetensors
+2026-04-17 06:01:37 3812769424 trtllm-models/qwen-hf/model-00011-of-00037.safetensors
+2026-04-17 06:01:38 3995183968 trtllm-models/qwen-hf/model-00012-of-00037.safetensors
+2026-04-17 06:02:08 3995183968 trtllm-models/qwen-hf/model-00013-of-00037.safetensors
+2026-04-17 06:02:58 3995200464 trtllm-models/qwen-hf/model-00014-of-00037.safetensors
+2026-04-17 06:02:58 3812769424 trtllm-models/qwen-hf/model-00015-of-00037.safetensors
+2026-04-17 06:03:10 3995183968 trtllm-models/qwen-hf/model-00016-of-00037.safetensors
+2026-04-17 06:03:17 3995183968 trtllm-models/qwen-hf/model-00017-of-00037.safetensors
+2026-04-17 06:04:14 3995200464 trtllm-models/qwen-hf/model-00018-of-00037.safetensors
+2026-04-17 06:05:10 3812769424 trtllm-models/qwen-hf/model-00019-of-00037.safetensors
+2026-04-17 06:05:17 3995183968 trtllm-models/qwen-hf/model-00020-of-00037.safetensors
+2026-04-17 06:05:30 3995183968 trtllm-models/qwen-hf/model-00021-of-00037.safetensors
+2026-04-17 06:05:40 3995200464 trtllm-models/qwen-hf/model-00022-of-00037.safetensors
+2026-04-17 06:06:36 3812769424 trtllm-models/qwen-hf/model-00023-of-00037.safetensors
+2026-04-17 06:07:23 3995183968 trtllm-models/qwen-hf/model-00024-of-00037.safetensors
+2026-04-17 06:07:38 3995183968 trtllm-models/qwen-hf/model-00025-of-00037.safetensors
+2026-04-17 06:07:50 3995200464 trtllm-models/qwen-hf/model-00026-of-00037.safetensors
+2026-04-17 06:08:00 3812769424 trtllm-models/qwen-hf/model-00027-of-00037.safetensors
+2026-04-17 06:08:51 3995183968 trtllm-models/qwen-hf/model-00028-of-00037.safetensors
+2026-04-17 06:09:46 3995183968 trtllm-models/qwen-hf/model-00029-of-00037.safetensors
+2026-04-17 06:09:59 3995200464 trtllm-models/qwen-hf/model-00030-of-00037.safetensors
+2026-04-17 06:10:11 3812769424 trtllm-models/qwen-hf/model-00031-of-00037.safetensors
+2026-04-17 06:10:15 3995183968 trtllm-models/qwen-hf/model-00032-of-00037.safetensors
+2026-04-17 06:11:14 3995183968 trtllm-models/qwen-hf/model-00033-of-00037.safetensors
+2026-04-17 06:12:06 3995200464 trtllm-models/qwen-hf/model-00034-of-00037.safetensors
+2026-04-17 06:12:21 3812769424 trtllm-models/qwen-hf/model-00035-of-00037.safetensors
+2026-04-17 06:12:26 3995183968 trtllm-models/qwen-hf/model-00036-of-00037.safetensors
+2026-04-17 06:12:34 3460317640 trtllm-models/qwen-hf/model-00037-of-00037.safetensors
+2026-04-17 06:13:35      79025 trtllm-models/qwen-hf/model.safetensors.index.json
+2026-04-17 06:13:36    7031645 trtllm-models/qwen-hf/tokenizer.json
+2026-04-17 06:13:36       7305 trtllm-models/qwen-hf/tokenizer_config.json
+2026-04-17 06:13:36    2776833 trtllm-models/qwen-hf/vocab.json
+```
 
 > [!TIP]
 > 설치된 파이썬 패키지 조회하기    
