@@ -1,4 +1,10 @@
 ## 추론 성능 비교 (versus vLLM) ##
+
+```
+python --version
+```
+
+
 ```
 pip install genai-perf
 
