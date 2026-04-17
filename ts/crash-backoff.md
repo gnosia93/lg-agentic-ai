@@ -1,4 +1,4 @@
-init container는 성공했는데, main container(triton)가 계속 크래시, 6번 재시작
+### init container는 성공했는데, main container(triton)가 계속 크래시, 6번 재시작 ###
 ```
 kubectl logs trtllm-qwen-78d96f8d54-lf2bl -c triton --previous
 ```
@@ -151,4 +151,22 @@ Traceback (most recent call last):
 pydantic_core._pydantic_core.ValidationError: 1 validation error for TrtLlmArgs
   Value error, max_batch_size [2048] is greater than build_config.max_batch_size [64] in build_config [type=value_error, input_value={'model': '/engines/qwen'...indow_too_large': False}, input_type=dict]
     For further information visit https://errors.pydantic.dev/2.10/v/value_error
+```
+
+### 해결방법 ###
+trtllm-serve의 기본 max_batch_size가 2048인데, 엔진 빌드할 때 64로 설정하였다. 서빙 시 빌드 값보다 클 수 없다.
+
+```
+--max_batch_size 64 추가한다.
+
+args:
+  - |
+    trtllm-serve serve /engines/qwen \
+      --tokenizer /models/qwen-hf \
+      --host 0.0.0.0 \
+      --port 8000 \
+      --tp_size 4 \
+      --max_beam_width 1 \
+      --max_batch_size 64 \
+      --backend tensorrt
 ```
