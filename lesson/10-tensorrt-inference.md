@@ -522,7 +522,7 @@ download: s3://eks-agentic-ai-tensorrt-llm/trtllm-models/qwen-hf/.cache/huggingf
 download: s3://eks-agentic-ai-tensorrt-llm/trtllm-models/qwen-hf/.cache/huggingface/download/model-00014-of-00037.safetensors.metadata to ../models/qwen-hf/.cache/huggingface/download/model-00014-of-00037.safetensors.metadata
 ...
 ```
-S3 로 부터 모델 다운로드가 완료될때 까지 30분 이상이 소요된다.
+S3 로 부터 모델 다운로드가 완료될때 까지 40분 이상이 소요된다.
 
 > [!TIP]
 > 모델 로딩을 빠르게 하기위해서는 EFS 또는 FSX for Lustre 파일시스템을 사용해야 한다.   
