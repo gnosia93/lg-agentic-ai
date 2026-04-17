@@ -11,7 +11,7 @@
 
 * [L4. 파인튜닝하기](https://github.com/gnosia93/agentic-ai-eks/blob/main/lesson/4-finetune.md)
 
-* [L5. RAG 파이프라인 설계](https://github.com/gnosia93/agentic-ai-eks/blob/main/lesson/5-rag.md)
+* [L5. RAG 파이프라인 설계 및 구현](https://github.com/gnosia93/agentic-ai-eks/blob/main/lesson/5-rag.md)
 
 * L6. Agentic AI
    - [LangGraph로 RAG 구현](https://github.com/gnosia93/agentic-ai-eks/blob/main/lesson/6-langgraph-rag.md)
