@@ -12,7 +12,7 @@ Triton Server는 서빙 인프라로 HTTP/gRPC 엔드포인트를 제공하고, 
 
 TensorRT-LLM은 추론 엔진으로 모델을 TensorRT 엔진으로 컴파일(빌드)하고, GPU에서 최적화된 커널로 추론을 실행한다. KV Cache 관리, Tensor Parallel 처리, 그리고 vLLM의 Continuous Batching과 유사한 In-flight Batching을 지원한다.
 
-## TensorRT-LLM 에 모델 배포하기 ##
+## Qwnen 72B 모델 TensorRT-LLM 적용하기  ##
 
 S3 버킷을 생성하고 테라폼에서 생성한 eks-agentic-ai-s3-access 을 쿠버네티스의 서비스 어카운트에 할당한다
 ```bash
