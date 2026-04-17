@@ -28,6 +28,7 @@ spec:
           command: ["/bin/sh", "-c"]
           args:
             - |
+              aws configure set default.s3.max_concurrent_requests 50
               echo "=== Downloading engine from S3 ==="
               aws s3 cp s3://${ENGINE_BUCKET}/trtllm-engines/qwen/ /engines/qwen/ --recursive
               echo "=== Downloading tokenizer from S3 ==="
