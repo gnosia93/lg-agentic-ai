@@ -36,7 +36,7 @@ WARNING: The NVIDIA Driver was not detected.  GPU functionality will not be avai
    https://docs.nvidia.com/datacenter/cloud-native/ .
 ```
 
-테스트를 실행한다.
+도커 컨네이너 안에서 테스트를 수행한다
 ```
 genai-perf profile \
   --model Qwen/Qwen2.5-72B-Instruct \
