@@ -34,6 +34,20 @@ helm install milvus milvus/milvus \
   -n milvus --create-namespace
 ```
 
+> [!TIP]
+> 설치된 helm 레포지토리 리스트를 확인한다.
+> ```
+> helm repo list
+> ```
+> [결과]
+> ```
+> NAME    URL                                      
+> nvidia  https://helm.ngc.nvidia.com/nvidia       
+> eks     https://aws.github.io/eks-charts         
+> milvus  https://zilliztech.github.io/milvus-helm/
+> ```
+
+
 ### IRSA ##
 ```
 EKS에서 useIAM=true 쓰려면
