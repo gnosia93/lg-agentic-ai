@@ -15,6 +15,13 @@ rag/
     └── LoRA_Low-Rank_Adaptation.pdf
 ```
 
+### 2. 환경 준비 ###
+필요한 패키지를 설치한다.
+```
+pip install boto3
+```
+
+
 설치
 ```
 curl -o RAGSearch.py \
