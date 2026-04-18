@@ -45,3 +45,19 @@ COPY RAGSearch.py rag_mcp_server.py ./
 EXPOSE 8000
 CMD ["python", "rag_mcp_server.py"]
 ```
+
+### 3. 빌드 / ecr 푸시 ### 
+```
+# ECR 리포지토리 생성 (최초 한 번)
+aws ecr create-repository --repository-name rag-mcp --region us-west-2
+
+# 로그인
+aws ecr get-login-password --region us-west-2 | \
+  docker login --username AWS --password-stdin \
+  <ACCOUNT_ID>.dkr.ecr.us-west-2.amazonaws.com
+
+# 빌드 & 푸시
+docker build -t rag-mcp:latest .
+docker tag rag-mcp:latest <ACCOUNT_ID>.dkr.ecr.us-west-2.amazonaws.com/rag-mcp:latest
+docker push <ACCOUNT_ID>.dkr.ecr.us-west-2.amazonaws.com/rag-mcp:latest
+```
