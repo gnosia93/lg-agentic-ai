@@ -49,6 +49,4 @@ resource "aws_iam_role_policy_attachment" "milvus_s3" {
   policy_arn = aws_iam_policy.milvus_s3.arn
 }
 
-output "milvus_role_arn" {
-  value = aws_iam_role.milvus.arn
-}
+
