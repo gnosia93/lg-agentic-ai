@@ -80,12 +80,14 @@ milvus-standalone-855bbfd867-s5pgz   1/1     Running   0          103s
 ## 테스트 ##
 Milvus는 gRPC(19530)와 HTTP(9091) 두 가지 포트를 노출한다.
 
-#### port-forward ####
 ```
 kubectl port-forward svc/milvus -n milvus 19530:19530
-```
 
-### 코드실행 ###
+curl -o milvus-test.py \
+https://raw.githubusercontent.com/gnosia93/eks-agentic-ai/refs/heads/main/code/rag/milvus-test.py
+
+python3 milvus-test.py
+```
 
 
 
