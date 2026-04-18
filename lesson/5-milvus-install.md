@@ -1,6 +1,9 @@
 ### s3 버킷생성 ###
 ```
-aws se mb
+export CLUSTER_NAME=eks-agentic-ai
+export BUCKET_NAME=${CLUSTER_NAME}-vectordb-milvus
+
+aws s3 mb ${BUCKET_NAME} -region ap-northeast-2
 ```
 
 ### milvus 설치 ###
