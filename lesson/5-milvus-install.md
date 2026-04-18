@@ -22,16 +22,22 @@ eks 클러스터에 milvus 를 설치한다.
 helm repo add milvus https://zilliz.github.io/milvus-helm/
 helm repo update
 
-helm install milvus milvus/milvus \
+helm upgrade --install milvus milvus/milvus \
   --set cluster.enabled=false \
+  --set pulsarv3.enabled=false \
+  --set pulsar.enabled=false \
+  --set kafka.enabled=false \
+  --set minio.enabled=false \
+  --set etcd.replicaCount=1 \
+  --set standalone.messageQueue=rocksmq \
   --set externalS3.enabled=true \
   --set externalS3.host=s3.amazonaws.com \
+  --set externalS3.port=443 \
   --set externalS3.bucketName=${VECTORDB_BUCKET_NAME} \
   --set externalS3.useIAM=true \
-  --set minio.enabled=false \
-  --set pulsar.enabled=false \
-  --set milvus.standalone.messageQueue=rocksmq \
-  -n milvus --create-namespace
+  --set externalS3.cloudProvider=aws \
+  --set externalS3.useSSL=true \
+  -n milvus
 ```
 
 > [!TIP]
