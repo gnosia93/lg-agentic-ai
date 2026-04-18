@@ -10,7 +10,8 @@ Query → Milvus 검색 (top 20) → Cohere Rerank (top 5) → Bedrock LLM
 rag/
 ├── PDFVectorStore.py   
 ├── RAGQuery.py         ← curl로 받은 파일
-├── main.py             
+├── main.py
+├── query.py            ← 실행파일 
 └── pdfs/               
     └── LoRA_Low-Rank_Adaptation.pdf
 ```
@@ -22,13 +23,14 @@ pip install boto3
 ```
 
 
-설치
+### 3. RAGQuery 클래스 내려받기 ###
+미리 작성해 둔 클래스 파일을 가져온다.
 ```
 curl -o RAGSearch.py \
 https://raw.githubusercontent.com/gnosia93/eks-agentic-ai/refs/heads/main/code/rag/RAGSearch.py
-
 ```
 
+### 4. 실행 스크립트 작성 (query.py) ###
 ```
 import argparse
 from RAGSearch import RAGSearch
@@ -72,4 +74,16 @@ def main():
 
 if __name__ == "__main__":
     main()
+```
+
+### 5. 실행 ###
+```
+kubectl port-forward -n milvus svc/milvus 19530:19530 &
+PF_PID=$!
+sleep 3   # 포트 포워딩 준비 대기
+
+export MILVUS_DB_IP=localhost
+python query.py --host ${MILVUS_DB_IP}
+
+kill $PF_PID
 ```
