@@ -1,5 +1,13 @@
 ## PDF 문서 저장하기 (레이아웃 파싱/청킹/임베딩) ##
 
+### 프로젝트 구조 ### 
+```
+rag/
+├── PDFVectorStore.py       ← curl로 받은 파일
+└── main.py                 ← 여기서 from PDFVectorStore import ...
+```
+
+### 실행하기 ###
 ```
 mkdir rag && cd rag
 pip install pymilvus langchain langchain-community pymupdf sentence-transformers
