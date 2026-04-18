@@ -1,6 +1,6 @@
 ### 1. s3 버킷확인 ###
 테라폼에서 milvus 용으로 생성한 버킷 확인한다. 
-```
+```bash
 export CLUSTER_NAME=eks-agentic-ai
 export ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
 export TOKEN=$(curl -sX PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600")
@@ -19,7 +19,7 @@ aws s3 ls | grep ${VECTORDB_BUCKET_NAME}
 
 ### 2. milvus 설치 ###
 eks 클러스터에 milvus 를 설치한다.
-```
+```bash
 helm repo add milvus https://zilliztech.github.io/milvus-helm/
 helm repo update
 
@@ -66,7 +66,7 @@ helm upgrade --install milvus milvus/milvus \
 > ```
 
 ### 3. milvus 설치 확인 ###
-```
+```bash
 kubectl get pods -n milvus
 ```
 [결과]
@@ -80,7 +80,7 @@ milvus-standalone-855bbfd867-s5pgz   1/1     Running   0          103s
 ## 테스트 ##
 Milvus는 gRPC(19530)와 HTTP(9091) 두 가지 포트를 노출한다.
 
-```
+```bash
 kubectl port-forward svc/milvus -n milvus 19530:19530
 
 curl -o milvus-test.py \
