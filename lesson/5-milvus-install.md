@@ -44,8 +44,12 @@ ebs-csi-node-f46xd                    3/3     Running   0          3m26s
 
 #### 3. addon 확인 ###
 ```
+aws eks list-addons --cluster-name ${CLUSTER_NAME} --region ${AWS_REGION}
+```
+[결과]
 ```
 
+```
 
 ### milvus 설치 ###
 eks 클러스터에 milvus 를 설치한다.
