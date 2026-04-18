@@ -94,6 +94,11 @@ python3 milvus-test.py
 kill %1
 ```
 
+[결과]
+```
+Handling connection for 19530
+data: [[{'id': 465701590715077047, 'distance': 0.0, 'entity': {}}, {'id': 465701590715077023, 'distance': 17.639362335205078, 'entity': {}}, {'id': 465701590715077049, 'distance': 19.199134826660156, 'entity': {}}, {'id': 465701590715077016, 'distance': 19.371822357177734, 'entity': {}}, {'id': 465701590715077045, 'distance': 19.390382766723633, 'entity': {}}]]
+```
 
 
 
