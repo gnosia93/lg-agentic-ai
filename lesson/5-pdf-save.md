@@ -105,7 +105,10 @@ EOF
 
 sh download_pdfs.sh 
 ```
-MILVUS_DB 에 pdf를 저장한다.
+#### MILVUS에 저장 ####
+EKS에서 Milvus는 `ClusterIP`로 떠 있어 외부에서 직접 접근할 수 없으므로, `kubectl port-forward`로 로컬 포트에 터널링한 뒤 접속한다.
+> 최초 실행 시 `BAAI/bge-m3` 임베딩 모델(약 2.3GB)이 자동 다운로드되므로 수 분 소요될 수 있다.
+
 ```
 kubectl port-forward -n milvus svc/milvus 19530:19530 &
 PF_PID=$!
