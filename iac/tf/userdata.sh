@@ -22,8 +22,8 @@ done
 # ============================================================
 # 1. VS Code Server (code-server)
 # ============================================================
-sudo -u ubuntu -i <<'EC2_USER_SCRIPT'
 echo "=== UserData Start 1 ==="
+sudo -u ubuntu -i <<'EC2_USER_SCRIPT'
 curl -fsSL https://code-server.dev/install.sh | sh && sudo systemctl enable --now code-server@ubuntu
 sleep 5
 sed -i 's/127.0.0.1:8080/0.0.0.0:9090/g; s/^password: .*/password: code!@#c/g' /home/ubuntu/.config/code-server/config.yaml
