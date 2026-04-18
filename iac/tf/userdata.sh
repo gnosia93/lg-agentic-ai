@@ -2,7 +2,6 @@
 # userdata.sh
 set -e                                     # 에러 나면, 즉시 중단
 exec > /var/log/userdata.log 2>&1          # 프로세스 교체 없이, 현재 셸의 출력만 변경
-echo "=== UserData Start ==="
 
 # ============================================
 # apt/dpkg 락 대기 (필수)
@@ -24,9 +23,8 @@ done
 # 1. VS Code Server (code-server)
 # ============================================================
 sudo -u ubuntu -i <<'EC2_USER_SCRIPT'
-echo "=== UserData Start 2 ==="
+echo "=== UserData Start 1 ==="
 curl -fsSL https://code-server.dev/install.sh | sh && sudo systemctl enable --now code-server@ubuntu
-echo "=== UserData Start 3 ==="
 sleep 5
 sed -i 's/127.0.0.1:8080/0.0.0.0:9090/g; s/^password: .*/password: code!@#c/g' /home/ubuntu/.config/code-server/config.yaml
 EC2_USER_SCRIPT
@@ -34,6 +32,7 @@ EC2_USER_SCRIPT
 # ============================================================
 # 2. Python 환경
 # ============================================================
+echo "=== UserData Start 2 ==="
 sudo -u ubuntu -i <<'PYTHON_SETUP'
 wget https://repo.anaconda.com/archive/Anaconda3-2025.12-2-Linux-x86_64.sh
 bash Anaconda3-2025.12-2-Linux-x86_64.sh -b -p /home/ubuntu/anaconda3
@@ -50,6 +49,7 @@ PYTHON_SETUP
 # ============================================================
 # 3. VS Code 확장
 # ============================================================
+echo "=== UserData Start 3 ==="
 sudo -u ubuntu -i code-server \
   --install-extension ms-python.python \
   --install-extension ms-toolsai.jupyter \
@@ -59,6 +59,7 @@ sudo -u ubuntu -i code-server \
 # ============================================================
 # 4. VS Code 설정 (conda 환경 연결)
 # ============================================================
+echo "=== UserData Start 4 ==="
 sudo -u ubuntu -i <<'VSCODE_SETTINGS'
 mkdir -p /home/ubuntu/.local/share/code-server/User
 cat > /home/ubuntu/.local/share/code-server/User/settings.json <<EOF
