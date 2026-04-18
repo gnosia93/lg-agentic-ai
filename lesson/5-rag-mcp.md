@@ -1,14 +1,37 @@
-### [1. rag-mcp-server.py 내려받기](https://github.com/gnosia93/eks-agentic-ai/blob/main/code/rag/rag-mcp-server.py) ###
+## RAGSearch MCP 서버 배포 (EKS) ##
+
+RAGSearch를 MCP 서버로 감싸 EKS에 Pod로 배포한다. 외부 에이전트는 MCP 클라이언트로 Tool을 호출해 논문 검색 및 답변 생성을 원격으로 사용할 수 있다.
 
 ```
-curl -o rag-mcp-server.py \
-https://raw.githubusercontent.com/gnosia93/eks-agentic-ai/refs/heads/main/code/rag/rag-mcp-server.py
+외부 에이전트 (MCP Client)
+        │  HTTP/SSE
+        ▼
+┌─────────────── EKS ───────────────┐
+│   rag-mcp Pod (FastMCP + SSE)     │
+│        │                          │
+│        ▼                          │
+│   Milvus (ClusterIP)              │
+└───────────────────────────────────┘
+        │
+        ▼ (VPC 외부)
+      AWS Bedrock
 ```
-* MILVUS_HOST의 기본값이 milvus.milvus.svc.cluster.local. 같은 클러스터 내부에선 이 이름으로 바로 접근 가능.
 
+### 1. 소스 코드 내려받기 ###
 
-### 2. Docker 이미지 만들기 ###
-* requirements.txt
+```bash
+curl -o rag_mcp_server.py \
+  https://raw.githubusercontent.com/gnosia93/eks-agentic-ai/refs/heads/main/code/rag/rag_mcp_server.py
+
+curl -o RAGSearch.py \
+  https://raw.githubusercontent.com/gnosia93/eks-agentic-ai/refs/heads/main/code/rag/RAGSearch.py
+```
+
+`MILVUS_HOST` 기본값은 `milvus.milvus.svc.cluster.local`로, 같은 클러스터 내부에서 Milvus에 바로 접근한다.
+
+### 2. Docker 이미지 빌드 ###
+
+`requirements.txt`:
 ```
 mcp>=1.0.0
 pymilvus>=2.4.0
@@ -18,54 +41,53 @@ langchain-community
 pymupdf
 boto3
 ```
-* Dockerfile
-```
+
+`Dockerfile`:
+```dockerfile
 FROM python:3.11-slim
 
 WORKDIR /app
 
-# 시스템 의존성 (torch가 필요로 하는 것들)
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     && rm -rf /var/lib/apt/lists/*
 
-# 파이썬 패키지 설치
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# 모델 사전 다운로드 (이미지 빌드 시점에 받아두면 Pod 시작 빠름)
+# 모델을 이미지에 포함해 Pod 시작 시간 단축
 RUN python -c "from sentence_transformers import SentenceTransformer, CrossEncoder; \
     SentenceTransformer('BAAI/bge-m3'); \
     CrossEncoder('BAAI/bge-reranker-v2-m3')"
 
-# 앱 코드
 COPY RAGSearch.py rag_mcp_server.py ./
+
 EXPOSE 8000
 CMD ["python", "rag_mcp_server.py"]
 ```
 
-### 3. 빌드 / ecr 푸시 ### 
-```
-# ECR 리포지토리 생성 (최초 한 번)
+> 이미지 크기가 크다(모델 2개 약 4GB). 프로덕션에서는 PVC로 모델을 분리하는 방법도 있다.
+
+### 3. ECR 푸시 ###
+
+```bash
 aws ecr create-repository --repository-name rag-mcp --region us-west-2
 
-# 로그인
 aws ecr get-login-password --region us-west-2 | \
   docker login --username AWS --password-stdin \
   <ACCOUNT_ID>.dkr.ecr.us-west-2.amazonaws.com
 
-# 빌드 & 푸시
 docker build -t rag-mcp:latest .
 docker tag rag-mcp:latest <ACCOUNT_ID>.dkr.ecr.us-west-2.amazonaws.com/rag-mcp:latest
 docker push <ACCOUNT_ID>.dkr.ecr.us-west-2.amazonaws.com/rag-mcp:latest
 ```
-* 이미지 사이즈가 꽤 크다(모델 2개가 약 4GB). 프로덕션이면 모델을 초기화 때 다운로드하거나 PVC로 분리하는 것도 방법.
 
+### 4. EKS 배포 ###
 
-### 4. eks 배포 ###
-#### EKS 배포 (Bedrock 호출용 IRSA 포함) ####
-iam-policy.json (Bedrock 호출 권한):
-```
+#### 4.1 Bedrock 접근 권한 (IRSA) ####
+
+`iam-policy.json`:
+```json
 {
   "Version": "2012-10-17",
   "Statement": [{
@@ -76,14 +98,11 @@ iam-policy.json (Bedrock 호출 권한):
 }
 ```
 
-#### IRSA 설정 ####
-```
-# IAM 정책 생성
+```bash
 aws iam create-policy \
   --policy-name RAGMCPBedrockAccess \
   --policy-document file://iam-policy.json
 
-# eksctl로 ServiceAccount + IAM Role 연결
 eksctl create iamserviceaccount \
   --cluster=<클러스터명> \
   --namespace=rag \
@@ -91,8 +110,11 @@ eksctl create iamserviceaccount \
   --attach-policy-arn=arn:aws:iam::<ACCOUNT_ID>:policy/RAGMCPBedrockAccess \
   --approve
 ```
-deployment
-```
+
+#### 4.2 Deployment & Service ####
+
+`deployment.yaml`:
+```yaml
 apiVersion: v1
 kind: Namespace
 metadata:
@@ -113,7 +135,7 @@ spec:
       labels:
         app: rag-mcp
     spec:
-      serviceAccountName: rag-mcp-sa   # IRSA
+      serviceAccountName: rag-mcp-sa
       containers:
         - name: rag-mcp
           image: <ACCOUNT_ID>.dkr.ecr.us-west-2.amazonaws.com/rag-mcp:latest
@@ -141,7 +163,7 @@ spec:
             httpGet:
               path: /sse
               port: 8000
-            initialDelaySeconds: 60   # 모델 로딩 시간
+            initialDelaySeconds: 60
             periodSeconds: 10
 ---
 apiVersion: v1
@@ -150,53 +172,74 @@ metadata:
   name: rag-mcp
   namespace: rag
 spec:
-  type: ClusterIP   # 우선 내부용
+  type: ClusterIP
   selector:
     app: rag-mcp
   ports:
     - port: 80
       targetPort: 8000
 ```
-* kubectl apply -f deployment.yaml
-* kubectl -n rag get pods -w
 
-## 테스트 ##
-포트 포워딩 설정 후 테스트..
+```bash
+kubectl apply -f deployment.yaml
+kubectl -n rag get pods -w
 ```
+
+### 5. 테스트 ###
+
+ClusterIP 상태이므로 port-forward로 터널을 연 뒤 MCP 클라이언트로 호출한다.
+
+```bash
+kubectl port-forward -n rag svc/rag-mcp 8000:80 &
+PF_PID=$!
+sleep 3
+```
+
+`test_client.py`:
+```python
+import asyncio
 from mcp import ClientSession
 from mcp.client.sse import sse_client
 
-async with sse_client("https://rag-mcp.yourdomain.com/sse") as (read, write):
-    async with ClientSession(read, write) as session:
-        await session.initialize()
-        result = await session.call_tool(
-            "search_papers",
-            {"query": "LoRA가 뭐야?"}
-        )
-        print(result)
+
+async def main():
+    async with sse_client("http://localhost:8000/sse") as (read, write):
+        async with ClientSession(read, write) as session:
+            await session.initialize()
+
+            tools = await session.list_tools()
+            print("Tools:", [t.name for t in tools.tools])
+
+            result = await session.call_tool(
+                "search_papers",
+                {"query": "LoRA가 뭐야?"},
+            )
+            print(result.content[0].text)
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
 ```
 
-## 운영 포인트 ##
+```bash
+python test_client.py
+kill $PF_PID
 ```
-꼭 챙겨야 할 운영 포인트
-인증 (외부 공개 시 필수)
 
-MCP 자체엔 인증이 없어요. 보통 앞단에 다음 중 하나를 둡니다:
+### 운영 포인트 ###
 
-ALB 레벨: Cognito, OIDC 통합
-API 키: Nginx/ALB 앞에 간단한 API Gateway
-IAM 인증 ALB: SigV4로 서명된 요청만 허용
-VPN/PrivateLink: 특정 VPC에서만 접근
-리소스 요구량
+**인증 (외부 공개 시 필수)**
+MCP 프로토콜 자체에는 인증이 없어 앞단에 인증 계층을 둬야 한다.
+- ALB + Cognito/OIDC
+- API Gateway + API 키
+- IAM 인증 ALB (SigV4)
+- VPN/PrivateLink로 내부 접근만 허용
 
-bge-m3 + bge-reranker-v2-m3 로딩 시 메모리 약 56GB 필요. CPU로만 돌리면 응답 13초, GPU 노드 쓰면 훨씬 빠름.
+**리소스 요구량**
+bge-m3 + bge-reranker-v2-m3 로딩에 메모리 약 5~6GB 필요. CPU만 쓰면 질의 응답에 1~3초, GPU 노드면 훨씬 빠르다.
 
-스케일링
+**스케일링**
+SSE는 stateful 연결이라 HPA 적용 시 sticky session 설정이 필요하다. 모델 로딩이 무거워 스케일 아웃보다 스케일 업이 효율적인 경우가 많다.
 
-MCP SSE는 stateful 연결이라 HPA 적용 시 sticky session 고려
-동시 사용자 많으면 replicas 늘리고 LB에서 분배
-모델 로딩이 무거우니 스케일 아웃보단 스케일 업이 효율적일 수도
-Milvus 컬렉션 로드
-
-Collection.load()가 __init__에 있어서 서버 시작 시 Milvus에도 로드 요청이 감. Milvus 쪽 메모리도 감안.
-```
+**Milvus 컬렉션 로드**
+`Collection.load()`가 생성자에 있어 서버 시작 시 Milvus도 메모리에 올린다. Milvus 쪽 메모리 할당도 함께 고려한다.
