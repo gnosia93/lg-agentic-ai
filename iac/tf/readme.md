@@ -206,6 +206,9 @@ EOF
 ```
 kubectl get ec2nodeclass,nodepool
 ```
+> [!TIP]
+> 카펜터 로그 확인  
+> kubectl logs -n kube-system -l app.kubernetes.io/name=karpenter -f
 
 ### GPU 파드 테스트 ###
 ```
