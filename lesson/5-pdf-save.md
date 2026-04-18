@@ -11,9 +11,9 @@ PDF 파일 → 레이아웃 파싱 → 청킹 → 임베딩(벡터화) → Milvu
 ### 1. 프로젝트 구조 ### 
 ```
 rag/
-├── PDFVectorStore.py       ← curl로 받은 파일
-└── main.py                 ← 여기서 from PDFVectorStore import ...
-└── pdfs/
+├── PDFVectorStore.py   ← curl로 받은 파일
+├── main.py             ← 실행 스크립트
+└── pdfs/               ← PDF 파일 보관
     └── LoRA_Low-Rank_Adaptation.pdf
 ```
 
