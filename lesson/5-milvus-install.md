@@ -16,34 +16,10 @@ aws s3 mb s3://${VECTORDB_BUCKET_NAME} --region ${AWS_REGION}
 aws s3 ls | grep ${VECTORDB_BUCKET_NAME}
 ```
 
-### EBS CSI 드라이버 설치 ###
+### CSI 드라이버 확인 ###
 ```
-export CSI_ROLE_NAME="${CLUSTER_NAME}-ebs-csi-driver"
-echo "CSI DRIVER ROLE: ${CSI_ROLE_NAME}"
-
-# OIDC Provider 연결 (이미 돼 있으면 넘어감)
-eksctl utils associate-iam-oidc-provider \
-  --cluster ${CLUSTER_NAME} \
-  --region ${AWS_REGION} \
-  --approve
-
-# EBS CSI용 IAM Role 생성
-eksctl create iamserviceaccount \
-  --name ebs-csi-controller-sa \
-  --namespace kube-system \
-  --cluster ${CLUSTER_NAME} \
-  --region ${AWS_REGION} \
-  --attach-policy-arn arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy \
-  --approve \
-  --role-only \
-  --role-name ${CSI_ROLE_NAME}
-
-# EBS CSI Addon 설치
-aws eks create-addon \
-  --cluster-name ${CLUSTER_NAME} \
-  --region ${AWS_REGION} \
-  --addon-name aws-ebs-csi-driver \
-  --service-account-role-arn arn:aws:iam::${ACCOUNT_ID}:role/${CSI_ROLE_NAME}
+storage class
+csi 드라이버 설치확인 
 ```
 
 
