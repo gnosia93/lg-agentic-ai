@@ -77,6 +77,11 @@ if __name__ == "__main__":
 ```
 
 ### 5. 실행 ###
+AWS 콘솔에서 사용하고자 하는 Bedrock 모델에 대해 액세스를  활성화한다.
+```
+AWS 콘솔 → Bedrock → Model access → Claude 3.5 Sonnet 등 사용할 모델 "Request access"
+```
+
 ```
 kubectl port-forward -n milvus svc/milvus 19530:19530 &
 PF_PID=$!
