@@ -5,6 +5,7 @@
 curl -o rag-mcp-server.py \
 https://raw.githubusercontent.com/gnosia93/eks-agentic-ai/refs/heads/main/code/rag/rag-mcp-server.py
 ```
+* MILVUS_HOST의 기본값이 milvus.milvus.svc.cluster.local. 같은 클러스터 내부에선 이 이름으로 바로 접근 가능.
 
 ```
 pip install mcp
