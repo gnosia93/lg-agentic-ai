@@ -21,6 +21,7 @@ aws s3 ls | grep ${VECTORDB_BUCKET_NAME}
 ```
 storage class
 csi 드라이버 설치확인 
+addon 확인
 ```
 
 
