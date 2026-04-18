@@ -54,7 +54,7 @@ ADDONS  aws-ebs-csi-driver
 ### milvus 설치 ###
 eks 클러스터에 milvus 를 설치한다.
 ```
-helm repo add milvus https://zilliz.github.io/milvus-helm/
+helm repo add milvus https://zilliztech.github.io/milvus-helm/
 helm repo update
 
 helm upgrade --install milvus milvus/milvus \
