@@ -8,18 +8,17 @@
 
 이 구조를 실제 데이터로 실체화한 것이 **지식 그래프(Knowledge Graph)** 이며, Neo4j 같은 그래프 DB로 구현한다. 최근에는 LLM과 결합한 **GraphRAG** 로 확장되어, 벡터 기반 RAG가 약한 "관계 기반 추론"을 보완하는 기술로 주목받고 있다.
 
----
 
-## Neo4j 설치
+### Neo4j 설치
 
-### 1. Helm 저장소 추가
+#### 1. Helm 저장소 추가
 
 ```bash
 helm repo add neo4j https://helm.neo4j.com/neo4j
 helm repo update
 ```
 
-### 2. values 파일 작성
+#### 2. values 파일 작성
 
 `neo4j-values.yaml` 파일을 생성한다.
 
@@ -52,22 +51,18 @@ nodeSelector:
 EOF
 ```
 
-### 3. 설치
+#### 3. 설치
 
 ```bash
 helm install neo4j neo4j/neo4j -n neo4j \
   -f neo4j-values.yaml --create-namespace
 ```
 
-### 4. 설치 확인
+#### 4. 설치 확인
 
 ```bash
 kubectl get all -n neo4j
 ```
-
-`neo4j-0` Pod가 Running 상태가 될 때까지 1~2분 정도 걸린다 (PVC 바인딩 + Neo4j 초기화 과정).
-
----
 
 ## 접속 테스트
 
@@ -82,7 +77,6 @@ sleep 3
 ```
 
 `test.py` 작성:
-
 ```python
 from neo4j import GraphDatabase
 
@@ -111,15 +105,12 @@ driver.close()
 ```
 
 실행:
-
 ```bash
 python test.py
 # Edward Hu → LoRA
 
 kill $PF_PID
 ```
-
----
 
 ## 브라우저 UI로 확인 (선택)
 
@@ -136,22 +127,4 @@ Neo4j Browser에서 그래프를 시각적으로 확인할 수 있다.
 ```cypher
 MATCH (a:Author)-[:AUTHORED]->(p:Paper)
 RETURN a, p
-```
-
-> [!NOTE]
-> 운영 환경에서는 기본 비밀번호를 반드시 변경하고, 외부 노출 시 ALB + ACM으로 HTTPS를 적용해야 한다.
-
----
-
-## 정리
-
-```bash
-# port-forward 종료
-kill $PF_PID
-
-# Neo4j 제거 (필요시)
-helm uninstall neo4j -n neo4j
-
-# 데이터까지 완전 삭제 (PVC)
-kubectl delete pvc -n neo4j --all
 ```
