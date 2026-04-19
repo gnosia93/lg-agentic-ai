@@ -35,28 +35,29 @@ kubectl annotate serviceaccount s3-access-sa -n default \
 * 참고 - role/eks-agentic-ai-s3-access 의 경우 테라폼의 [s3.tf](https://github.com/gnosia93/eks-agentic-ai/blob/main/iac/tf/s3.tf) 에서 이미 생성하였다.
 
 > [!NOTE]
+> IRSA(IAM Role for Service Account) 동작 흐름  
 > ```
-> [1] Pod 생성
-     │  - SA에 role-arn annotation 있음 확인
-     │  - EKS Pod Identity Webhook이 Pod spec 자동 수정
-     │    · OIDC 토큰을 볼륨으로 마운트
-     │    · AWS_ROLE_ARN, AWS_WEB_IDENTITY_TOKEN_FILE 환경변수 주입
-     ▼
-[2] Pod 안에 토큰 준비 완료
-     /var/run/secrets/eks.amazonaws.com/serviceaccount/token
-     (kubelet이 주기적으로 갱신)
-     ▼
-[3] Pod에서 AWS SDK 호출 (예: aws s3 ls)
-     │  - SDK가 환경변수 자동 감지
-     │  - 토큰 파일을 읽어 STS로 전달
-     ▼
-[4] STS: AssumeRoleWithWebIdentity
-     │  - OIDC 프로바이더로 토큰 서명 검증
-     │  - Trust Policy 조건 확인 (sub, aud)
-     ▼
-[5] 임시 자격증명 발급 (AccessKey/SecretKey/SessionToken, 1시간 유효)
-     ▼
-[6] 해당 자격증명으로 AWS API 호출 (S3 등)
+>[1] Pod 생성
+>     │  - SA에 role-arn annotation 있음 확인
+>     │  - EKS Pod Identity Webhook이 Pod spec 자동 수정
+>     │    · OIDC 토큰을 볼륨으로 마운트
+>     │    · AWS_ROLE_ARN, AWS_WEB_IDENTITY_TOKEN_FILE 환경변수 주입
+>     ▼
+>[2] Pod 안에 토큰 준비 완료
+>     │  - 토큰: /var/run/secrets/eks.amazonaws.com/serviceaccount/token
+>     │  - kubelet이 주기적으로 갱신
+>     ▼
+>[3] Pod에서 AWS SDK 호출 (예: aws s3 ls)
+>     │  - SDK가 환경변수 자동 감지
+>     │  - 토큰 파일을 읽어 STS로 전달
+>     ▼
+>[4] STS: AssumeRoleWithWebIdentity
+>     │  - OIDC 프로바이더로 토큰 서명 검증
+>     │  - Trust Policy 조건 확인 (sub, aud)
+>     ▼
+>[5] 임시 자격증명 발급 (AccessKey/SecretKey/SessionToken, 1시간 유효)
+>     ▼
+>[6] 해당 자격증명으로 AWS API 호출 (S3 등)
 > ```
 
   
