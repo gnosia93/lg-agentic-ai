@@ -12,6 +12,7 @@ resource "aws_iam_role" "s3_access" {
       Condition = {
         StringEquals = {
           "${replace(aws_eks_cluster.main.identity[0].oidc[0].issuer, "https://", "")}:sub" = "system:serviceaccount:default:s3-access-sa"
+          "${local.oidc_host}:aud" = "sts.amazonaws.com"
         }
       }
     }]
