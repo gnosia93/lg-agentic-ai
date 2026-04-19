@@ -64,7 +64,7 @@ kubectl get all -n neo4j
 ...
 ```
 
-## 접속 테스트
+### 테스트
 
 Neo4j가 ClusterIP로 떠 있으므로 Milvus와 동일하게 `kubectl port-forward`로 터널을 연 뒤 접속한다.
 
@@ -112,7 +112,7 @@ python test.py
 kill $PF_PID
 ```
 
-## 브라우저 UI로 확인 (선택)
+### 브라우저 UI로 확인 (선택)
 
 Neo4j Browser에서 그래프를 시각적으로 확인할 수 있다.
 
