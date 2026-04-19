@@ -28,7 +28,7 @@ https://raw.githubusercontent.com/gnosia93/eks-agentic-ai/refs/heads/main/code/r
 
 > [!NOTE]
 > 쿠버네티스(Kubernetes) 내부 DNS 형식  
-> <service-name>.<namespace>.svc.cluster.local
+> `<service-name>.<namespace>.svc.cluster.local`
 
 
 ### 2. Docker 이미지 빌드 ###
