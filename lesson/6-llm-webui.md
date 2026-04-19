@@ -55,7 +55,7 @@ EOF
 > grep -A1 -iE "openai|ollama|env" default-values.yaml    
 > 
 
-### 배포하기 ###
+helm 차트를 이용하여 배포한다. 
 ```
 helm install open-webui open-webui/open-webui \
   -n webui --create-namespace \
