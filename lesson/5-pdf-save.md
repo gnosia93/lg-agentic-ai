@@ -156,10 +156,16 @@ kill $PF_PID
 
 ## 빠른 Sanity Check ##
 ```bash
-curl -o check_milvus.py
+curl -o check_milvus.py \
 https://raw.githubusercontent.com/gnosia93/eks-agentic-ai/refs/heads/main/code/rag/check_milvus.py
 
-python check_milvus.py
+```
+
+```bash
+curl -o test_search.py \
+https://raw.githubusercontent.com/gnosia93/eks-agentic-ai/refs/heads/main/code/rag/test_search.py
+
+python test_search.py
 ```
 
 ## [BAAI/bge-m3](https://arxiv.org/pdf/2402.03216) ##
