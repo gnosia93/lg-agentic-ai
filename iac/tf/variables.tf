@@ -25,8 +25,30 @@ variable "gpu_type" {
 variable "system_node_instance_types" {
   description = "EKS system node Group Instance Type "
   type    = list(string)
-  default = ["c7i.xlarge"]
+  default = ["c7g.xlarge"]
 }
+
+variable "system_node_ami_type" {
+  description = "시스템 노드 그룹의 AMI 타입"
+  type        = string
+  default     = "AL2023_ARM_64_STANDARD"
+
+  validation {
+    condition = contains([
+      "AL2023_x86_64_STANDARD",
+      "AL2023_ARM_64_STANDARD",
+      "AL2023_x86_64_NVIDIA",
+      "AL2_x86_64",
+      "AL2_x86_64_GPU",
+      "AL2_ARM_64",
+      "BOTTLEROCKET_x86_64",
+      "BOTTLEROCKET_ARM_64",
+    ], var.system_node_ami_type)
+    error_message = "지원하지 않는 ami_type입니다. AL2023_ARM_64_STANDARD 같은 값을 써주세요."
+  }
+}
+
+
 
 variable "key_name" {
   description = "AWS SSH Key Pair name for EC2 access"
