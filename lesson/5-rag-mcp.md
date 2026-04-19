@@ -26,6 +26,11 @@ https://raw.githubusercontent.com/gnosia93/eks-agentic-ai/refs/heads/main/code/r
 
 `MILVUS_HOST` 기본값은 `milvus.milvus.svc.cluster.local`로, 같은 클러스터 내부에서 Milvus에 바로 접근한다.
 
+> ![NOTE]
+> 쿠버네티스(Kubernetes) 내부 DNS 형식  
+> <service-name>.<namespace>.svc.cluster.local
+
+
 ### 2. Docker 이미지 빌드 ###
 
 `requirements.txt`:
