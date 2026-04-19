@@ -21,9 +21,11 @@ S3 버킷을 생성하고 테라폼에서 생성한 eks-agentic-ai-s3-access 을
 ```bash
 export CLUSTER_NAME=eks-agentic-ai
 export ACCOUNT_ID=$(aws sts get-caller-identity --query "Account" --output text)
+export TOKEN=$(curl -sX PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600")
+export AWS_REGION=$(curl -sH "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/placement/region)
 export ENGINE_BUCKET=${CLUSTER_NAME}-tensorrt-llm-${ACCOUNT_ID}
 
-aws s3 mb s3://${ENGINE_BUCKET} --region ap-northeast-2
+aws s3 mb s3://${ENGINE_BUCKET} --region ${AWS_REGION}
 aws s3 ls | grep ${ENGINE_BUCKET}
 
 kubectl create serviceaccount s3-access-sa -n default
