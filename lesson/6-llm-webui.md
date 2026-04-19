@@ -1,5 +1,5 @@
 
-### 아키텍처 ###
+## 아키텍처 ##
 ```
 사용자
   ↓ HTTP
@@ -13,11 +13,6 @@ LangGraph Agent (워크플로우)
   ├─ Tool: ...
   └─ Bedrock (LLM)
 ```
-#### 필수 구현해야 할 3개 엔드포인트 ####
-* GET  /v1/models              → 사용 가능한 모델 목록
-* POST /v1/chat/completions    → 실제 채팅 (stream / non-stream 모두)
-* GET  /health                 → 헬스체크 (선택이지만 권장)
-
 
 ## Open WebUI 설치 ##
 ```
@@ -71,9 +66,6 @@ EOF
 > #### 필요한 부분만 grep ####   
 > grep -A1 -iE "openai|ollama|env" default-values.yaml  
 > 
-> 
-
-
 
 배포하기
 ```
@@ -88,6 +80,12 @@ helm install open-webui open-webui/open-webui \
 
 
 
+----
+
+#### 필수 구현해야 할 3개 엔드포인트 ####
+* GET  /v1/models              → 사용 가능한 모델 목록
+* POST /v1/chat/completions    → 실제 채팅 (stream / non-stream 모두)
+* GET  /health                 → 헬스체크 (선택이지만 권장)
 
 
 ## FastAPI + LangGraph ##
