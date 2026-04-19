@@ -68,9 +68,9 @@ export ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
 export TOKEN=$(curl -sX PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600")
 export AWS_REGION=$(curl -sH "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/placement/region)
 
-echo "CLUSTER_NAME: $CLUSTER_NAME"
-echo "ACCOUNT_ID: $ACCOUNT_ID"
-echo "AWS_REGION: $AWS_REGION"
+echo "CLUSTER_NAME: ${CLUSTER_NAME}"
+echo "ACCOUNT_ID: ${ACCOUNT_ID}"
+echo "AWS_REGION: ${AWS_REGION}"
 
 aws ecr create-repository --repository-name rag-mcp --region ${AWS_REGION}
 
@@ -105,10 +105,10 @@ aws iam create-policy \
   --policy-document file://iam-policy.json
 
 eksctl create iamserviceaccount \
-  --cluster=<클러스터명> \
+  --cluster=${CLUSTER_NAME} \
   --namespace=rag \
   --name=rag-mcp-sa \
-  --attach-policy-arn=arn:aws:iam::<ACCOUNT_ID>:policy/RAGMCPBedrockAccess \
+  --attach-policy-arn=arn:aws:iam::${ACCOUNT_ID}:policy/RAGMCPBedrockAccess \
   --approve
 ```
 
