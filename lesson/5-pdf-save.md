@@ -108,7 +108,7 @@ EOF
 ```
 pdf 들을 다운로드 한다.
 ```
-sh download_pdfs.sh 
+bash download_pdfs.sh 
 ```
 
 #### 5.2 MILVUS에 저장 ####
