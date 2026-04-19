@@ -30,15 +30,15 @@ neo4j:
   password: "neo4j-admin"       # 초기 비밀번호 (8자 이상 필수)
 
   resources:
-    cpu: "1"
-    memory: "4Gi"
+    cpu: "2"
+    memory: "8Gi"
 
 volumes:
   data:
     mode: defaultStorageClass
     defaultStorageClass:
       requests:
-        storage: 20Gi
+        storage: 30Gi
 
 services:
   neo4j:
