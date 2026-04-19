@@ -162,7 +162,7 @@ Q: LoRA에서 low-rank adaptation이 왜 효과적인가?
   5. [02_LoRA_Low-Rank_Adaptation p.8] sim=0.677 rerank=0.946
 ```
 
-포트 포워딩 설정을 삭제한다.
+서비스 포트 포워딩을 삭제한다.
 ```
 kill $PF_PID
 ```
