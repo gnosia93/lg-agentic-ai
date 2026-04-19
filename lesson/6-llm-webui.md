@@ -32,11 +32,11 @@ service:
 
 resources:
   requests:
-    cpu: "1"
-    memory: "2Gi"
-  limits:
     cpu: "2"
     memory: "4Gi"
+  limits:
+    cpu: "4"
+    memory: "8Gi"
 
 extraEnvVars:
   - name: WEBUI_NAME
