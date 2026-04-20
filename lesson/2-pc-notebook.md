@@ -62,7 +62,7 @@ aws ec2 run-instances --image-id ${AMI_ID} \
 Host gpu-dev
   HostName <EC2-IP>
   User ubuntu
-  IdentityFile ~/aws-kp2.pem
+  IdentityFile <Key File Path>
 ```
 
 1. `Ctrl+Shift+P → "Remote-SSH: Connect to Host" → gpu-dev 선택`
