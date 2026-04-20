@@ -57,120 +57,49 @@ kubectl create secret generic hf-token \
   --from-literal=token=$HF_TOKEN
 ```
 
-### 2. 모델 배포 ###
+### 2. 테스트 자동화 ###
 ```
-# vllm-qwen25-7b.yaml
+#!/bin/bash
+# eval-all.sh
+
+MODELS=(
+  "Qwen/Qwen2.5-7B-Instruct"
+  "meta-llama/Llama-3.1-8B-Instruct"
+  "google/gemma-2-9b-it"
+)
+
+for MODEL in "${MODELS[@]}"; do
+  NAME=$(echo $MODEL | tr '/' '-' | tr '[:upper:]' '[:lower:]')
+  echo "=== $MODEL ==="
+
+  # 1. vLLM 올림 (Helm 또는 kubectl)
+  kubectl apply -f - <<EOF
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: vllm-qwen25-7b
+  name: vllm-current
   namespace: llm-eval
 spec:
-  replicas: 1
-  selector:
-    matchLabels: {app: vllm-qwen25-7b}
-  template:
-    metadata:
-      labels: {app: vllm-qwen25-7b}
-    spec:
-      nodeSelector:
-        nvidia.com/gpu.product: NVIDIA-A10G   # 노드에 맞춰 수정
-      containers:
-        - name: vllm
-          image: vllm/vllm-openai:latest
-          args:
-            - "--model=Qwen/Qwen2.5-7B-Instruct"
-            - "--max-model-len=8192"
-            - "--gpu-memory-utilization=0.9"
-            - "--port=8000"
-          ports:
-            - containerPort: 8000
-          env:
-            - name: HUGGING_FACE_HUB_TOKEN
-              valueFrom:
-                secretKeyRef: {name: hf-token, key: token}
-            - name: HF_HOME
-              value: /cache/hf
-          resources:
-            limits:
-              nvidia.com/gpu: 1
-              memory: "32Gi"
-          volumeMounts:
-            - name: hf-cache
-              mountPath: /cache/hf
-      volumes:
-        - name: hf-cache
-          emptyDir:
-            sizeLimit: 50Gi
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: vllm-qwen25-7b
-  namespace: llm-eval
-spec:
-  selector: {app: vllm-qwen25-7b}
-  ports:
-    - port: 8000
-      targetPort: 8000
+  # ... args: --model=$MODEL
+EOF
+
+  # 2. Ready 될 때까지 대기
+  kubectl -n llm-eval rollout status deploy/vllm-current --timeout=600s
+
+  # 3. 평가 실행 (CPU Pod에서)
+  kubectl -n llm-eval exec eval-runner -- \
+    lm_eval --model local-chat-completions \
+      --model_args model=$MODEL,base_url=http://vllm-current:8000/v1/chat/completions \
+      --tasks mmlu,arc_challenge,hellaswag \
+      --output_path /results/$NAME
+
+  # 4. 다른 평가들도 실행
+  kubectl -n llm-eval exec eval-runner -- \
+    python /scripts/domain_eval.py --model $NAME
+
+  # 5. vLLM 내림
+  kubectl -n llm-eval delete deploy vllm-current
+done
 ```
 
-### 3. 동작 확인 ###
-```
-kubectl -n llm-eval port-forward svc/vllm-qwen25-7b 8000:8000
-
-curl http://localhost:8000/v1/chat/completions \
-  -H "Content-Type: application/json" \
-  -d '{
-    "model": "Qwen/Qwen2.5-7B-Instruct",
-    "messages": [{"role": "user", "content": "한국의 수도는?"}]
-  }'
-```
-
-### 4. 테스트 ###
-
-테스트 파드 생성
-```
-# lm-eval-pod.yaml
-apiVersion: v1
-kind: Pod
-metadata:
-  name: lm-eval
-  namespace: llm-eval
-spec:
-  serviceAccountName: llm-eval-sa
-  restartPolicy: Never
-  nodeSelector:
-    nvidia.com/gpu.product: NVIDIA-A10G
-  containers:
-    - name: eval
-      image: python:3.11
-      command: ["/bin/bash", "-c", "sleep infinity"]
-      resources:
-        limits:
-          nvidia.com/gpu: 1
-      env:
-        - name: HF_HOME
-          value: /cache/hf
-      volumeMounts:
-        - name: cache
-          mountPath: /cache/hf
-  volumes:
-    - name: cache
-      emptyDir:
-        sizeLimit: 50Gi
-```
-
-### 모델 평가 (vLLM 서버 대상) ###
-```
-kubectl -n llm-eval exec -it lm-eval -- bash
-pip install lm-eval[openai]
-
-# vLLM 서버를 OpenAI 호환으로 평가
-lm_eval \
-  --model local-chat-completions \
-  --model_args model=Qwen/Qwen2.5-7B-Instruct,base_url=http://vllm-qwen25-7b:8000/v1/chat/completions \
-  --tasks mmlu,arc_challenge,hellaswag,truthfulqa_mc2 \
-  --output_path /cache/results/qwen25-7b
-```
 
