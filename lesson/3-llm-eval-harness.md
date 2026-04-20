@@ -34,8 +34,6 @@ MODELS=(
   "google/gemma-2-9b-it"
 )
 
-# deployment.yaml 다운로드
-
 for MODEL in "${MODELS[@]}"; do
   NAME=$(echo $MODEL | tr '/' '-' | tr '[:upper:]' '[:lower:]')
   echo "=== $MODEL ==="
