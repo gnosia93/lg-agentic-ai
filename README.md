@@ -13,6 +13,17 @@ _This workshop is under construction, Not fully implemented yet_
 
 ### _Architecture_ ### 
 ...
+* ec2
+* eks
+  * vectordb
+  * rag mcp
+  * langgraph agent
+  * custome llm (gpu pod)
+* bedrock
+* s3
+  - model registry
+  - vectordb storage
+  
 
 ### _Topics_ ### 
 
