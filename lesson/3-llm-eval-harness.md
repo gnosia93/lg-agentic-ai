@@ -68,20 +68,13 @@ MODELS=(
   "google/gemma-2-9b-it"
 )
 
+# 1. deployment.yaml 다운로드
+
 for MODEL in "${MODELS[@]}"; do
   NAME=$(echo $MODEL | tr '/' '-' | tr '[:upper:]' '[:lower:]')
   echo "=== $MODEL ==="
 
-  # 1. vLLM 올림 (Helm 또는 kubectl)
-  kubectl apply -f - <<EOF
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: vllm-current
-  namespace: llm-eval
-spec:
-  # ... args: --model=$MODEL
-EOF
+  envsubst < vllm-l40s.yaml | kubectl apply -f -
 
   # 2. Ready 될 때까지 대기
   kubectl -n llm-eval rollout status deploy/vllm-current --timeout=600s
@@ -102,4 +95,16 @@ EOF
 done
 ```
 
+```
+# 변수 설정
+export MODEL="Qwen/Qwen2.5-7B-Instruct"
 
+# 적용 (템플릿 치환)
+envsubst < vllm-l40s.yaml | kubectl apply -f -
+
+# 로딩 로그 보기
+kubectl -n llm-eval logs -f deploy/vllm-current
+
+# Ready 확인
+kubectl -n llm-eval rollout status deploy/vllm-current --timeout=900s
+```
