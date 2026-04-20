@@ -53,3 +53,62 @@ kubectl create secret generic hf-token \
   -n llm-eval \
   --from-literal=token=$HF_TOKEN
 ```
+
+
+### Deployment ###
+```
+# vllm-qwen25-7b.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vllm-qwen25-7b
+  namespace: llm-eval
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: vllm-qwen25-7b}
+  template:
+    metadata:
+      labels: {app: vllm-qwen25-7b}
+    spec:
+      nodeSelector:
+        nvidia.com/gpu.product: NVIDIA-A10G   # 노드에 맞춰 수정
+      containers:
+        - name: vllm
+          image: vllm/vllm-openai:latest
+          args:
+            - "--model=Qwen/Qwen2.5-7B-Instruct"
+            - "--max-model-len=8192"
+            - "--gpu-memory-utilization=0.9"
+            - "--port=8000"
+          ports:
+            - containerPort: 8000
+          env:
+            - name: HUGGING_FACE_HUB_TOKEN
+              valueFrom:
+                secretKeyRef: {name: hf-token, key: token}
+            - name: HF_HOME
+              value: /cache/hf
+          resources:
+            limits:
+              nvidia.com/gpu: 1
+              memory: "32Gi"
+          volumeMounts:
+            - name: hf-cache
+              mountPath: /cache/hf
+      volumes:
+        - name: hf-cache
+          emptyDir:
+            sizeLimit: 50Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vllm-qwen25-7b
+  namespace: llm-eval
+spec:
+  selector: {app: vllm-qwen25-7b}
+  ports:
+    - port: 8000
+      targetPort: 8000
+```
