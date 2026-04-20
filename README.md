@@ -13,7 +13,7 @@ _This workshop is under construction, Not fully implemented yet_
 
 ### _Architecture_ ### 
 ![](https://github.com/gnosia93/eks-agentic-ai/blob/main/lesson/images/worshop-architecture.png)
-
+_drawn by nano banana 2.0_
   
 ### _Topics_ ### 
 
