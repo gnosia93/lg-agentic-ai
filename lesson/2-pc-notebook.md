@@ -23,15 +23,16 @@ export SG_ID=$(aws ec2 describe-security-groups --filters \
   "Name=group-name,Values=eks-host-sg" "Name=vpc-id,Values=${VPC_ID}" \
   --query 'SecurityGroups[0].GroupId' --output text)
 
-export SUBNET_ID=$()
+export PUBLIC_SUBNET_ID=$(aws ec2 describe-subnets \
+  --filters "Name=vpc-id,Values=${VPC_ID}" \
+  --query 'Subnets[?MapPublicIpOnLaunch==`true`] | [0].SubnetId' --output text)
 ```
 
 ```
-aws ec2 run-instances \
-  --image-id ${AMI_ID} \
+aws ec2 run-instances --image-id ${AMI_ID} \
   --instance-type g7e.4xlarge \
   --key-name ${KEY_NAME} \
-  --subnet-id ${SUBNET_ID} \
+  --subnet-id ${PUBLIC_SUBNET_ID} \
   --security-group-ids ${SG_ID} \
   --associate-public-ip-address \
   --count 1 \
