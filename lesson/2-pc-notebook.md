@@ -6,17 +6,29 @@ export CLUSTER_NAME=eks-agentic-ai
 export ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
 export TOKEN=$(curl -sX PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600")
 export AWS_REGION=$(curl -sH "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/placement/region)
+export VPC_ID=$(curl -sH "X-aws-ec2-metadata-token: $TOKEN" \
+  http://169.254.169.254/latest/meta-data/network/interfaces/macs/${MAC}/vpc-id)
 
 echo "CLUSTER_NAME: $CLUSTER_NAME"
 echo "ACCOUNT_ID: $ACCOUNT_ID"
 echo "AWS_REGION: $AWS_REGION"
+echo "VPC_ID: $VPC_ID"
 ```
 
 ```
-aws ssm get-parameter \
+AMI_ID=$(aws ssm get-parameter \
   --name /aws/service/deeplearning/ami/x86_64/base-oss-nvidia-driver-gpu-ubuntu-22.04/latest/ami-id \
-  --region us-east-1 \
-  --query 'Parameter.Value' --output text
+  --region ${AWS_REGION} --query 'Parameter.Value' --output text)
+
+SG_ID=$(aws ec2 describe-security-groups --filters \
+  "Name=group-name,Values=eks-host-sg" "Name=vpc-id,Values=${VPC_ID}" \
+  --query 'SecurityGroups[0].GroupId' --output text)
+
+
+
+
+
+
 
 
 aws ec2 run-instances \
