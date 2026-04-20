@@ -1,8 +1,9 @@
-
 ## Agentic AI 아키텍처 ##
-![](https://github.com/gnosia93/eks-agentic-ai/blob/main/lesson/images/agentic-arch.png)
 
 AI Agent는 도구를 사용하고 작업을 수행하는 개별 주체(an entity)를 뜻하고, Agentic AI는 이런 에이전트들이 자율적으로 계획·추론·실행하는 시스템 전반의 패러다임(a paradigm)을 가리킨다. 본 워크샵에서는 LangGraph로 agent를 구현하고, 이를 프로덕션에 올리는 agentic AI 시스템을 구축한다.
+
+![](https://github.com/gnosia93/eks-agentic-ai/blob/main/lesson/images/agentic-arch.png)
+
 
 ### Open WebUI 설치 ###
 ```
