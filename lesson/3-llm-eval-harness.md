@@ -111,7 +111,7 @@ spec:
   storageClassName: gp3
   resources:
     requests:
-      storage: 100Gi
+      storage: 500Gi
 EOF
 ```
 
