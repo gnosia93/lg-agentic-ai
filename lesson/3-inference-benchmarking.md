@@ -11,7 +11,25 @@
 운영 비용: 위 1+2+3 합산해서 "달러당 품질"
 
 ### 측정방법 ###
+
 ```
+# vLLM 소스 받기
+cd ~
+git clone https://github.com/vllm-project/vllm.git
+cd vllm
+
+# 현재 설치된 vLLM 버전과 같은 태그로 체크아웃 (중요)
+pip show vllm | grep Version
+# 예: Version: 0.6.3
+git checkout v0.6.3
+
+# 의존성만 추가 설치 (vLLM 본체는 이미 있음)
+pip install aiohttp datasets transformers
+```
+
+```
+cd ~/vllm
+
 python benchmarks/benchmark_serving.py \
   --backend vllm \
   --base-url http://localhost:8000 \
