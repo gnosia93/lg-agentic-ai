@@ -36,7 +36,7 @@ _Drawn using Nano Banana 2.0 with a rough prompt, Not perfect but it's amazing !
    - [RAG 백엔드 구현 (검색 → 리랭킹 → 답변 생성)](https://github.com/gnosia93/eks-agentic-ai/blob/main/lesson/5-llm-call.md)
    - [MCP 서버로 배포 (EKS)](https://github.com/gnosia93/eks-agentic-ai/blob/main/lesson/5-rag-mcp.md)
          
-* L6. Agentic AI
+* [L6. LangGraph로 Agentic AI 만들기]()
    - [Open WebUI 설치](https://github.com/gnosia93/eks-agentic-ai/blob/main/lesson/6-llm-webui.md)
    - [LangGraph @tool 콜링](https://github.com/gnosia93/agentic-ai-eks/blob/main/lesson/6-tool-calling.md)   <-- test 필요
    - 메모리 관리 - 단기 메모리 (대화 컨텍스트) / 장기 메모리 (사용자 프로필)
