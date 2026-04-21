@@ -10,10 +10,13 @@
 * 언어: 한국어 지원 수준
 운영 비용: 위 1+2+3 합산해서 "달러당 품질"
 
-### 성능 측정 ###
+### llmperf(Anyscale) 를 활용한 측정 ###
 ```
-pip install llmperf
-
+git clone https://github.com/ray-project/llmperf.git
+cd llmperf
+pip install -e .
+```
+```
 export OPENAI_API_BASE="http://localhost:8000/v1"
 export OPENAI_API_KEY="dummy"
 
@@ -27,7 +30,3 @@ python token_benchmark_ray.py \
   --num-concurrent-requests 8 \
   --llm-api openai
 ```
-
-### 전용 벤치마크 도구 ###
-* GenAI-Perf (NVIDIA): https://github.com/triton-inference-server/perf_analyzer
-* llmperf (Anyscale): https://github.com/ray-project/llmperf
