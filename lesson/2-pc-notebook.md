@@ -98,7 +98,7 @@ python /tmp/check.py
 > aws ec2 terminate-instances --instance-ids $INSTANCE_ID --region $AWS_REGION
 > ```
 
-### 2. PC 의 VS-CODE 로 접속하기 ###
+### 2. VS-CODE Remote-SSH 접속하기 ###
 이 방식은 로컬 PC 의 vs-code IDE 에서 리모트 서버로 ssh 로 접속하여 주피터 노트북을 실행하는 방법이다.
 
 `~/.ssh/config 파일에 추가`:
