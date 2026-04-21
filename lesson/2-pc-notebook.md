@@ -71,7 +71,7 @@ INSTANCE_ID=$(aws ec2 run-instances --image-id ${AMI_ID} \
   --output text)
 
 echo "INSTANCE_ID=$INSTANCE_ID"
-
+echo "Waiting for EC2 DNS assigning ..."
 sleep 10
 echo "INSTANCE_DNS: $(aws ec2 describe-instances --instance-ids $INSTANCE_ID --region $AWS_REGION \
   --query 'Reservations[0].Instances[0].PublicDnsName' --output text)"
