@@ -12,7 +12,7 @@ export VPC_ID=$(aws ec2 describe-instances --instance-ids $INSTANCE_ID \
   --query 'Reservations[0].Instances[0].VpcId' --output text)
 export AWS_REGION=$(curl -sH "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/placement/region)
 
-export AMID_ID=$(aws ec2 describe-images --owners amazon \
+export AMI_ID=$(aws ec2 describe-images --owners amazon \
   --filters "Name=name,Values=Deep Learning OSS Nvidia Driver AMI GPU PyTorch*Ubuntu 22.04*" \
   --query 'sort_by(Images, &CreationDate)[-1].[ImageId]' --output text --region $AWS_REGION)
 export SG_ID=$(aws ec2 describe-security-groups --filters \
