@@ -71,7 +71,7 @@ _Drawn using Nano Banana 2.0 with a rough prompt, Not perfect but it's amazing !
    
 * [L11. 멀티노드 인퍼런스 구성](https://github.com/gnosia93/eks-agentic-ai/blob/main/lesson/11-multi-node-inference.md)
    - [LeaderWorkerSet](https://github.com/gnosia93/eks-agentic-ai/blob/main/lesson/11-LeaderWorkerSet.md)
-   - KubeRay
+   - [KubeRay](https://github.com/gnosia93/langgraph-agentic-ai/blob/main/lesson/11-rayserve.md)
      
 * [L12. Post Training](https://github.com/gnosia93/eks-agentic-ai/blob/main/lesson/12-post-training.md)
 
