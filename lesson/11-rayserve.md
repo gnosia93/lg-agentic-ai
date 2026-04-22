@@ -1,5 +1,4 @@
-RayCluster, RayService, RayJob 같은 CRD를 제공하는데 이걸 쓰면 Ray 클러스터 자체를 쿠버네티스 리소스처럼 선언적으로 관리할 수 있다.
-
+다음은 KubeRay 만을 이용한 인퍼런스 아키텍처 구현의 예이다. KubeRay 는 RayCluster, RayService, RayJob 같은 CRD를 제공하는데 이를 활용하면 Ray 클러스터 자체를 쿠버네티스 리소스 처럼 선언적으로 관리할 수 있다.
 ```
 apiVersion: ray.io/v1
 kind: RayService
