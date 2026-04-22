@@ -135,14 +135,7 @@ kubectl get pods -n llm-serving -l leaderworkerset.sigs.k8s.io/name=vllm-llama-4
 ```
 
 
-### LWS가 적합한 경우 ###
-
-* 70B 이상 대형 모델의 멀티노드 분산 추론
-* 텐서 병렬 + 파이프라인 병렬 조합이 필요한 경우
-* Ray, MPI 같은 head-worker 구조 시스템 위에서 도는 워크로드
-* KubeRay 대신 더 가볍게 Ray를 묶고 싶은 경우
-
-### 마치며 ###
+## 마치며 ##
 LWS는 "대형 LLM 분산 추론을 선언적으로 표현하고 싶다"는 요구에서 출발해, 기존 StatefulSet + Service + Init Container 조합으로 어거지로 만들던 구성을 간결하게 바꿀 수 있다. 특히 vLLM 커뮤니티가 LWS를 표준 배포 방식으로 밀고 있어서, 생태계 호환성 측면에서도 이점이 있다.
 
 ```
