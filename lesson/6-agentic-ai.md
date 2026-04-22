@@ -96,5 +96,5 @@ Reason:  "이제 답변하기에 충분하다"
   - 토큰/비용/레이턴시 추적
   - 실습: Langfuse 붙이고 실제 실행 분석
 
-### 6. (선택) Open WebUI 연동 ###
+### [6. Open WebUI 연동](https://github.com/gnosia93/langgraph-agentic-ai/blob/main/lesson/6-llm-webui.md) ###
  
