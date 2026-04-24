@@ -51,6 +51,28 @@ startupPolicy를 LeaderCreated로 설정하면 Leader가 먼저 Ready된 뒤에 
 kubectl apply --server-side -f \
   https://github.com/kubernetes-sigs/lws/releases/latest/download/manifests.yaml
 ```
+설치된 오브젝트를 확인한다.
+```
+kubectl get all -n lws-system
+```
+[결과]
+```
+NAME                                          READY   STATUS    RESTARTS   AGE
+pod/lws-controller-manager-567cc75d78-4t9js   1/1     Running   0          65s
+pod/lws-controller-manager-567cc75d78-cwgxv   1/1     Running   0          65s
+
+NAME                                             TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)    AGE
+service/lws-controller-manager-metrics-service   ClusterIP   172.20.106.195   <none>        8443/TCP   66s
+service/lws-webhook-service                      ClusterIP   172.20.78.73     <none>        443/TCP    66s
+
+NAME                                     READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/lws-controller-manager   2/2     2            2           65s
+
+NAME                                                DESIRED   CURRENT   READY   AGE
+replicaset.apps/lws-controller-manager-567cc75d78   2         2         2       65s
+```
+
+
 
 ## Llama 3.1 405B 배포하기 ##
 다음은 vLLM으로 Llama 3.1 405B를 2노드에 걸쳐 서빙하는 예제이다.
