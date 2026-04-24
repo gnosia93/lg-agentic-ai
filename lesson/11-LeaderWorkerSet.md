@@ -102,8 +102,8 @@ spec:
   rolloutStrategy:
     type: RollingUpdate
     rollingUpdateConfiguration:
-      maxUnavailable: 1
-      maxSurge: 0
+      maxUnavailable: 0
+      maxSurge: 1
   leaderWorkerTemplate:
     size: 2
     restartPolicy: RecreateGroupOnPodRestart
