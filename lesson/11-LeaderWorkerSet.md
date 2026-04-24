@@ -76,7 +76,7 @@ replicaset.apps/lws-controller-manager-567cc75d78   2         2         2       
 다음은 vLLM으로 Llama 3.1 405B를 2노드에 걸쳐 서빙하는 예제이다.
 
 > [!IMPORTANT]
-> 본 튜토리얼에서는 GPU 수급 불균형으로 인해 NVLink 지원 인스턴스(p4d, p5) 확보가 어려워 g7e.48xlarge(GTX 6000 × 8, PCIe)를 사용한다. 실제 운영 환경에서는 NVLink가 지원되는 p5.48xlarge(H100 × 8) 이상의 GPU 를 선택해야 한다. NVLink는 PCIe 대비 약 7~14배 높은 GPU 간 대역폭을 제공하여, 멀티 GPU 추론 시 통신 병목을 크게 줄여준다.
+> 본 튜토리얼에서는 GPU 수급 불균형으로 인해 NVLink 지원 인스턴스(p5 이상) 확보가 어려워 g7e.48xlarge(GTX 6000 × 8, PCIe)를 사용한다. 실제 운영 환경에서는 NVLink가 지원되는 p5.48xlarge(H100 × 8) 이상의 GPU 를 선택해야 한다. NVLink는 PCIe 대비 약 7~14배 높은 GPU 간 대역폭을 제공하여, 멀티 GPU 추론 시 통신 병목을 크게 줄여준다.
 
 #### 배포 전 확인사항 ####
 * hf-token Secret 생성됨 (kubectl create secret generic hf-token --from-literal=token=hf_xxx)
