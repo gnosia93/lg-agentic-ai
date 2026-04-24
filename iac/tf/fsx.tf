@@ -4,7 +4,7 @@
 resource "aws_security_group" "fsx_lustre" {
   name        = "fsx-sg"
   description = "FSx Lustre access"
-  vpc_id      = var.vpc_id
+  vpc_id      = aws_vpc.main.id
 }
 
 # Lustre 포트 988 (self-referencing)
