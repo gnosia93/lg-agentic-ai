@@ -1,3 +1,4 @@
+/*
 # ---------------------------------------------------
 # Security Group for FSx Lustre
 # ---------------------------------------------------
@@ -160,3 +161,4 @@ output "fsx_pv_manifest" {
           storage: ${aws_fsx_lustre_file_system.llama_cache.storage_capacity}Gi
   EOT
 }
+*/
