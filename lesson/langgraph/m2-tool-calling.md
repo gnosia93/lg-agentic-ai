@@ -66,24 +66,7 @@ graph.invoke(Command(resume="approve"), config=...)
 interrupt는 체크포인터가 있어야 동작한다. 실습에서는 MemorySaver를 붙인다.
 
 ### 3. 그래프 구조 ###
-```
-       ┌─────────┐
-START ▶│  agent  │◀──────────┐
-       └────┬────┘           │
-            │                │
-   tools_condition           │
-            │                │
-     ┌──────┴──────┐         │
-     ▼             ▼         │
- ┌───────┐        END        │
- │ tools │──────────────────┘
- └───┬───┘
-     │ (민감 도구면)
-     ▼
- ┌─────────┐       ┌─────────┐
- │approval │──────▶│ execute │
- └─────────┘       └─────────┘
-```
+![](https://github.com/gnosia93/lg-agentic-ai/blob/main/lesson/images/tool-call-chart.png)
 
 ### 4. 실습 코드 (시작 템플릿) ###
 ```
