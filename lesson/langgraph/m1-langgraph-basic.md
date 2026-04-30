@@ -62,19 +62,43 @@ graph = builder.compile()
 graph.invoke({"input_text": "hello"})
 # {'input_text': 'hello', 'output_text': 'HELLO'}
 ```
-
-
-### 4. 실습 ###
+## 4. 실습 ##
 영어 원문을 받아서 → translate 노드가 한국어로 번역 → summarize 노드가 한 줄 요약 → 최종 상태 반환.
+
+### 4-1. 패키지 설치 ###
+```
+uv add langchain-aws boto3
+```
+
+### 4-2. 모델 사전 점검 ###
+Bedrock은 리전별·모델별로 액세스 승인이 따로 필요하다. 승인받지 않은 모델을 호출하는 경우 AccessDeniedException 이 발생한다. 
+```
+AWS Console → Bedrock → Model access → Manage model access → 사용할 모델 체크 → Save
+```
+
+* 사용 가능한 모델 확인
+```
+aws bedrock list-foundation-models --region ap-northeast-2 \
+  --query "modelSummaries[?contains(modelId, 'claude')].modelId"
+```
+
+### 4-2. 실습코드 ###
 ```
 """
-실습 1-2: 번역 → 요약 2-노드 파이프라인
+실습 1: 번역 → 요약 2-노드 파이프라인
 """
 from typing import TypedDict
-from langchain_openai import ChatOpenAI
+#from langchain_openai import ChatOpenAI
+from langchain_aws import ChatBedrockConverse
 from langgraph.graph import StateGraph, START, END
 
-llm = ChatOpenAI(model="gpt-4o-mini", temperature=0)
+#llm = ChatOpenAI(model="gpt-4o-mini", temperature=0)
+llm = ChatBedrockConverse(
+    model="anthropic.claude-3-5-sonnet-20241022-v2:0",
+    region_name="ap-northeast-2",
+    temperature=0,
+    max_tokens=2048,
+)
 
 class State(TypedDict):
     original: str        # 영어 원문
