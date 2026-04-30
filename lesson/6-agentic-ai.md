@@ -10,17 +10,6 @@
 ---
 각 모듈 상세
 ```
-M1. LangGraph 기본기 (60분)
-목표: "그래프"라는 사고방식을 몸에 익힌다.
-
-LangChain vs LangGraph — 체인에서 그래프로 넘어가는 이유
-핵심 3요소: State, Node, Edge
-StateGraph 컴파일과 호출(invoke, stream)
-리듀서(add_messages) 개념
-실습 1-1: "에코 그래프" — 사용자 메시지를 받아 대문자로 바꿔 돌려주는 단일 노드 그래프. 실습 1-2: 두 노드를 연결해 translate → summarize 직선 파이프라인 만들기.
-
-체크포인트: graph.get_graph().draw_mermaid()로 그래프 구조를 그려 볼 수 있어야 통과.
-
 M2. 도구 + 조건부 라우팅 + HITL (75분)
 목표: 실제 업무 에이전트의 뼈대 패턴을 모두 경험한다.
 
