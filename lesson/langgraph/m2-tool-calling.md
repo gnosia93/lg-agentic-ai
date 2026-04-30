@@ -20,7 +20,6 @@ def get_pricing(instance_type: str) -> str:
     """EC2 인스턴스 타입의 시간당 가격(USD)을 조회한다.
     예: 'c7i.large', 'c7g.large'
     """
-    ...
 ```
 
 #### 2-2. ToolNode — 도구 실행을 담당하는 노드 ####
