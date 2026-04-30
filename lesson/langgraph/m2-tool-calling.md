@@ -48,8 +48,29 @@ builder.add_edge("tools", "agent")      # 도구 실행 후 다시 LLM에게
 > 
 > Reasoning + Acting의 합성어로, 2022년 논문 ReAct: Synergizing Reasoning and Acting in Language Models에서 제안된 LLM 에이전트의 행동 패턴이다.   
 > "생각 → 행동 → 관찰"을 목표 달성까지 반복하는 루프로 구현한다.  
-> Thought(무엇을 할지 생각) → Action(도구 호출) → Observation(도구 결과 관찰) → Thought(결과 보고 다음 판단)  ...(목표달성때 까지 반복) → Final Answer          
 
+#### 구체적인 예시 ####
+
+`Thought(무엇을 할지 생각) → Action(도구 호출) → Observation(도구 결과 관찰) → Thought(결과 보고 다음 판단)  ...(목표달성때 까지 반복) → Final Answer`
+
+사용자: "us-west-2의 c7i.large 가격과 Graviton 대안을 알려줘"
+```
+Thought: 먼저 c7i.large 가격을 조회해야겠다.
+Action: get_pricing("c7i.large")
+Observation: c7i.large: $0.1020/hour
+
+Thought: 이제 Graviton 대안을 찾자.
+Action: recommend_graviton_alternative("c7i.large")
+Observation: c7i.large → c7g.large (약 20% 저렴)
+
+Thought: 대안 가격도 확인해두면 좋겠다.
+Action: get_pricing("c7g.large")
+Observation: c7g.large: $0.0816/hour
+
+Thought: 정보가 다 모였다. 답변하자.
+Final Answer: c7i.large는 시간당 $0.1020이며,
+Graviton 대안인 c7g.large는 $0.0816로 약 20% 저렴합니다.    
+```
 
 #### 2-4. Human-in-the-loop — interrupt ####
 특정 지점에서 그래프 실행을 멈추고, 외부(사람)로부터 값을 받아 재개한다.
